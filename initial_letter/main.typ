@@ -4,8 +4,7 @@
 )
 #set text(
   font: "Noto Sans Math",
-  //font: "Open Sans",
-  size: 11pt,
+  size: 10pt,
 )
 #set par(
   justify: true,
@@ -39,6 +38,7 @@
 #let header(content) = block(
   fill: rgb(117, 115, 115),
   width: 100%,
+  radius: 10%, 
   height: auto,
   outset: 0.5em, 
   heading(text(content, fill: white), level: 1) 
