@@ -3,8 +3,9 @@
   margin: (x: 3cm, y: 1.5cm),
 )
 #set text(
-  font: "New Computer Modern",
-  size: 12pt,
+  font: "Noto Sans Math",
+  //font: "Open Sans",
+  size: 11pt,
 )
 #set par(
   justify: true,
@@ -47,6 +48,8 @@
 
 Plugin Architecture with Rust - an Analysis of Obstacles and Prospects
 
+#linebreak()
+
 #header("Problem")
 
 //- Was ist die Ausgangssituation und welches Problem besteht?
@@ -56,6 +59,7 @@ The Rust programming language is increasingly being selected for new projects wh
 // For "Hensoldt - Secure and Protect" these features are critical for their radar systems.
 // This upcoming bachelor thesis is about the analysis of implementing a flexible plugin systems in Rust and understanding the various advantages and disadvantages.
 
+#linebreak()
 
 #header("Research objective and questions")
 
@@ -74,6 +78,8 @@ Goal of the paper is to analyze different approaches for developing a plugin sys
 //- Analysis of performance impacts
 //While not the primary focus, the thesis will also briefly address the performance implications of the discussed approaches.
 The work makes results tangible through prototypical implementations, ensuring practival relevance and real-world applicability
+
+#linebreak()
 
 #header("Expected results and contributions")
 //- Wo stehen wir voraussichtlich nach Abschluss Ihrer Bachelorarbeit?
