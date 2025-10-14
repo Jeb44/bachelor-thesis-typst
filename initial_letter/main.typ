@@ -26,7 +26,7 @@
 )
 
 
-= Bachelor Thesis Proposal - Gabriel Zimmermann
+= Bachelor Thesis Proposal --- Gabriel Zimmermann
 
 #set heading(numbering: (..nums) => {
  set text(fill: white)
@@ -44,9 +44,9 @@
   heading(text(content, fill: white), level: 1) 
 )
 
-#header("Titel")
+#header("Title")
 
-Plugin Architecture with Rust - an Analysis of Obstacles and Prospects
+Plugin Architectures with Rust - an Analysis of Obstacles and Prospects
 
 #linebreak()
 
@@ -77,7 +77,6 @@ Goal of the paper is to analyze different approaches for developing a plugin sys
 
 //- Analysis of performance impacts
 //While not the primary focus, the thesis will also briefly address the performance implications of the discussed approaches.
-The work makes results tangible through prototypical implementations, ensuring practival relevance and real-world applicability
 
 #linebreak()
 
@@ -86,11 +85,13 @@ The work makes results tangible through prototypical implementations, ensuring p
 
 Upon completion of this bachelor thesis, the goal is to provide a clear and structured analysis of the current landscape for building plugin architectures in Rust. It will not present a single "best" solution, but rather a comprehensive comparison of available approaches. The thesis will serve as a guide for developers, enabling them to make an informed decision based on their specific requirements regarding safety, complexity, performance, and interoperability. The final document will delineate the obstacles posed by Rust's design and the prospects offered by modern solutions.
 
-//Using the result of the research, a _small protoype for data fusion track algorithmns_ will be provided.
+
+//Using the result of the research, a small protoype for data fusion track algorithmns will be provided.
+The work makes results tangible through prototypical implementations, ensuring practival relevance and real-world applicability.
+
 
 
 //- Durch welchen Ansatz wollen Sie die derzeit vorhandene Lücke voraussichtlich schließen?
 //- Gibt es schon vergleichbare Lösungsansätze und wo sind diese dokumentiert?
-//- Applikationsbespiel mit Tracks für Data Fusion?
 
 
