@@ -38,10 +38,10 @@
 #let header(content) = block(
   fill: rgb(117, 115, 115),
   width: 100%,
-  radius: 10%, 
+  radius: 10%,
   height: auto,
-  outset: 0.5em, 
-  heading(text(content, fill: white), level: 1) 
+  outset: 0.5em,
+  heading(text(content, fill: white), level: 1)
 )
 
 #header("Title")
@@ -93,5 +93,3 @@ The work makes results tangible through prototypical implementations, ensuring p
 
 //- Durch welchen Ansatz wollen Sie die derzeit vorhandene Lücke voraussichtlich schließen?
 //- Gibt es schon vergleichbare Lösungsansätze und wo sind diese dokumentiert?
-
-
