@@ -42,7 +42,6 @@ check:
 
 ## Temperate Measurement
 
-
 ### Practical Temperate Measurement
 First Accessed: 2026.02.04
 [Link](https://books.google.de/books?id=73Km1TpL2mkC&lpg=PP1&ots=FKUr-NJVYS&dq=temperature%20measurement&lr&pg=PA12#v=onepage&q&f=false)
@@ -267,3 +266,6 @@ What chapters/pages are of interest...
 
 
 
+- Time Consumption
+- cpu load
+- chat gpt :D
