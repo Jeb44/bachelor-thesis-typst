@@ -224,7 +224,6 @@ Potential für eine hervorragende Arbeit durch die Themenstellung gegeben ist.
 - bisher kaum Literaturrecherche, aber Ideen welche Inhalte noch einbaut werden sollen:
   - Beschreibung der Messtechnik (Zeit)
   - "Thermometermessung" simulieren (eine Quelle bereits gefunden)
-  - 
 
 
 stand der technik: 

@@ -1,0 +1,25 @@
+4) Zur Genehmigung des Themas einer Abschlussarbeit in Kooperation mit einem Unternehmen ist eine Beschreibung der *Aufgabenstellung* einzureichen, aus der sich angestrebtes *Ergebnis, Terminplan und Hilfsmittel* ergeben
+
+Aufgabenstellung und Ergebnis sind bereits im orignallen Dokument erklärt.
+
+
+
+## Hilfsmittel 
+
+Arbeitsrechner, Virtuelle Machine und Arbeitsrepository bereitgestellt von Firma. 
+
+## Zeitplan
+
+- *Monat 1*: Literaturrecherche, Sammlung von verschiedenen Plugin Architekturen
+- *Monat 2*: Aufarbeitung der Vor- und Nachteile, Evaluation der notwendigen Bibliotheken und Werkzeugen und deren Auswirkung auf Entwicklungszeit und -komplexität
+- *Monat 3*: Implementierung der Architekturen (?? Im Kontext von Sensordatenfusion ??)
+- *Monat 4*: Evaluation der Architekturen, Interpretation der Ergebnisse, Ableitung von Handlungsempfehlungen und Ausarbeiten der Bachelorarbeit
+
+## Tools
+Work computer, virtual machine, and work repository provided by the company.
+
+## Schedule
+- *Month 1*: Literature research, collection of various plugin architectures
+- *Month 2*: Analysis of the advantages and disadvantages, evaluation of the necessary libraries and tools and their impact on development time and complexity
+- *Month 3*: Implementation and evaluation of the architectures
+- *Month 4*: Interpretation of the results, derivation of recommendations for action, and writing of the bachelor thesis.
