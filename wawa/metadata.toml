@@ -1,0 +1,11 @@
+# Thesis / dissertation metadata
+degree_program = "Informatik"
+student_name   = "Max Mustermann"
+
+# Submission date – month and year
+submission_month = "April"   # e.g., "June"
+submission_year  = 2026      # numeric year
+
+# Reviewers
+first_reviewer  = "Prof. Dr.-Ing. Klaus Baer"
+second_reviewer = "Prof. Dr.-Ing. Philipp Graf"
