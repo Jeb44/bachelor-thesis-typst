@@ -2,6 +2,7 @@
 
 //#load-bib()
 
+/*
 = Methods <sec:methods>
 #lorem(45)
 
@@ -49,3 +50,52 @@ The distances were calculated with @eq:gamma that we presented in @sec:methods.
 #lorem(240)
 
 #lorem(240)
+*/
+
+= Methods
+
+Goal of the research was to analyse the following points:
+- performance
+- development complexities
+- dependencies
+- safety
+- interoperability
+
+
+== Performance
+
+Only "pure" quantitative measurement will be the performance and maybe safety (using safety levels).
+
+=== Tools
+
+Using criterion and gungraun benchmarks. Not a perfect measurement, but it should give us enough hints about what happens behind the scenes.
+
+Using black_box, we can ensure that the iternal code isn't hyper-optimized by the compiler, which can lead to more accurate benchmarks.
+
+=== Benchmarks
+
+To test all of this, we use a simple temperature simulation, where an random amount of sensors will pick up the data. 
+
+Benches are run with the follolwing set of configurations:
+
+- run app "regarulary" with black_box // probably not interesting for the result itself
+- run average temperature fusion code with black_box once (sensors: 1 vs. 1000000)
+- run average temperature fusion code without black_box (sensors: 1 vs. 1000000)
+
+=== Evaluation
+
+Gunguan helps us see the internal required instructions on "my" CPU. This result should correlate with the actual run time using criterion. We can then reason about the expected overhead of a choosen approad.
+
+== Development complexities
+
+Schulnote
+
+Qualitative Meaurement
+
+== Limitations
+
+Might be part of "complexities"??
+
+Qualitative Meaurement
+
+== 

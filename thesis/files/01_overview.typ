@@ -1,7 +1,7 @@
 #import "../lib/bib.typ": load-bib
 
 //#load-bib()
-
+/*
 == Paper overview
 In this paper we introduce Typst, a new typesetting system designed to streamline the scientific writing process and provide researchers with a fast, efficient, and easy-to-use alternative to existing systems. Our goal is to shake up the status quo and offer researchers a better way to approach scientific writing.
 
@@ -12,3 +12,13 @@ To demonstrate the potential of Typst, we conducted a series of experiments comp
 Overall, we believe that Typst represents a significant step forward in the field of scientific writing and typesetting, providing researchers with a valuable tool to streamline their workflow and focus on what really matters: their research. In the following sections, we will introduce Typst in more detail and provide evidence for its superiority over other typesetting systems in a variety of scenarios.
 
 Test bla bla bla. @netwok2022
+*/
+
+= Wawa
+
+#lorem(20)
+
+adadad
+
+exactly uwu
+
