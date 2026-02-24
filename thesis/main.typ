@@ -4,7 +4,7 @@
 #include "files/00_titlepage.typ"
 
 #show: thu.with(
-  title: [A Typesetting System to Untangle the Scientific Writing Process],
+  title: [Plugin System's in Rust],
   authors: (
     (
       name: "Gabriel Zimmermann",
@@ -18,12 +18,12 @@
 )
 
 #abstract([
-  The process of scientific writing is often tangled up with the intricacies of typesetting, leading to frustration and wasted time for researchers. In this paper, we introduce Typst, a new typesetting system designed specifically for scientific writing. Typst untangles the typesetting process, allowing researchers to compose papers faster. In a series of experiments we demonstrate that Typst offers several advantages, including faster document creation, simplified syntax, and increased ease-of-use.
+  Somethign something what approaches are there to setup plugin systems in Rust. What are the pros and cons...
 ])
 
 #let details = toml("./metadata.toml")
 
-= Something... 
+= Metadata University...
 
 #details.degree_program
 

@@ -57,7 +57,7 @@ The distances were calculated with @eq:gamma that we presented in @sec:methods.
 Goal of the research was to analyse the following points:
 - performance
 - development complexities
-- dependencies
+- limitations
 - safety
 - interoperability
 
@@ -71,6 +71,8 @@ Only "pure" quantitative measurement will be the performance and maybe safety (u
 Using criterion and gungraun benchmarks. Not a perfect measurement, but it should give us enough hints about what happens behind the scenes.
 
 Using black_box, we can ensure that the iternal code isn't hyper-optimized by the compiler, which can lead to more accurate benchmarks.
+
+Gungruan uses valgrind internally.
 
 === Benchmarks
 
@@ -88,9 +90,10 @@ Gunguan helps us see the internal required instructions on "my" CPU. This result
 
 == Development complexities
 
-Schulnote
+Subjective and Qualitative Meaurement
 
-Qualitative Meaurement
+How will this impact a development team? This might just be an extra Evaluation of Limitations
+
 
 == Limitations
 
@@ -98,4 +101,13 @@ Might be part of "complexities"??
 
 Qualitative Meaurement
 
-== 
+== Safety
+
+Atemmpting Quantative by using safety levels.
+
+Rust Lanuage generally very safe. Errors often need to be "forced" or careless usage of unwinding. @nomicon_unwinding
+
+== interoperability
+
+How flexible are the presented approaches? Can they be linked with other libraries?
+
