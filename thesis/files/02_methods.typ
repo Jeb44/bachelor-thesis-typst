@@ -90,7 +90,7 @@ Gunguan helps us see the internal required instructions on "my" CPU. This result
 
 == Development complexities
 
-Subjective and Qualitative Meaurement
+Subjective, but also Qualitative Meaurement
 
 How will this impact a development team? This might just be an extra Evaluation of Limitations
 
