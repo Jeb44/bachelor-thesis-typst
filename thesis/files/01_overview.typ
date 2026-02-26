@@ -29,6 +29,8 @@ aka \#[cfg(feature = "enable_insane_feature")] or cfg!(feature = "enable_insane_
 
 I should probably explain \#[no_mangle] ...
 
+Due to dyn compability, we must use &self or &mut self (i needed to update my code again...)
+
 Mention speed up compile times? 
 
 
