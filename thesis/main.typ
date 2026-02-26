@@ -3,6 +3,10 @@
 
 #include "files/00_titlepage.typ"
 
+#pagebreak()
+
+#outline()
+
 #show: thu.with(
   title: [Plugin System's in Rust],
   authors: (
