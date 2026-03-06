@@ -20,11 +20,11 @@ aka \#[cfg(feature = "enable_insane_feature")] or cfg!(feature = "enable_insane_
 
 === Dynamic
 
-- C ABI
+Loading .so w/ libloading -> can be used for c and rust (but both un- and stable rust ABI should work here)
+
 - unstable Rust ABI
 - "stable" Rust ABI Crate
-- libloading -> can be used for c and rust (but both un- and stable rust ABI should work here :3)
-- web assembly
+- C ABI
 - rust bridge
 
 I should probably explain \#[no_mangle] ...
