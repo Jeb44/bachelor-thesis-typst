@@ -8,6 +8,7 @@ Loading requires some unloading.
 
 After loading, we need to "pin" the data, otherwise it will be dropped after the function call, which can lead to a segfault. @rust-ref-dylib
 
+Check out 'dlopen' crate? https://docs.rs/dlopen/latest/dlopen/
 
 
 

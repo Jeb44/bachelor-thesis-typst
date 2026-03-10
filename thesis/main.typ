@@ -39,3 +39,9 @@
 
 #include "files/03_notes_dynamic.typ"
 
+#pagebreak()
+
+#include "files/0y_safety.typ"
+
+#include "files/0y_performance.typ"
+
