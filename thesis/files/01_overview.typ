@@ -29,17 +29,10 @@ Loading .so w/ libloading -> can be used for c and rust (but both un- and stable
 
 I should probably explain \#[no_mangle] ...
 
-Due to dyn compability, we must use &self or &mut self (i needed to update my code again...)
+Due to dyn compability, we must use &self or &mut self 
 
 Mention speed up compile times? 
 
-
-== Baseline
-
-Simple data fusion of N temperature datas (2x float 64bits).
-
-- Average
-- First data field
 
 
 

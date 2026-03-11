@@ -1,5 +1,3 @@
-see lumo uwu
-
 == Interoperability
 
 Interoperability Categorization (European Open Science Cloud (EOSC) framework):
@@ -7,7 +5,7 @@ Interoperability Categorization (European Open Science Cloud (EOSC) framework):
 - Technical Level
 - Semantic Level
 
-Rust: FFI (Foreign Function Interface)
+For Rust: Technical Level through FFI (Foreign Function Interface) -> Binary compatibility, ABI stability, Runtime dependencies, linking mechanismns (also execution enviroments for WebAssembly :)
 
 Targeting "C ABI" will allow for wider interoperability with other languages that can also target C ABI, such as C, C++, Python (via ctypes), and many others.
 

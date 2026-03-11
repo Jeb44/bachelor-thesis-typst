@@ -5,17 +5,18 @@ Pure Quantitative measurement not possible, but general qualitative evaluation o
 Imporatnt? Introduce "Limitations" here too??
 
 My personal priority for measurements:
-- Limitations
-- Documentation
-- Logical Complexity
+- Documentation (Seitenanzahl, etc.)
+- Logical Complexity (different name... ) i.e. ECS changes how you think of your Code
 - Restrictions (like Types; FFI boundaries)
+- Memory and Runtime effects
+- Robustness: Unstable Rust ABI 
 
 Useful measurements:
-- Unsafe Code / Memory Safety
+- Unsafe Code / Memory Safety / Undefined Behaviour
 - Error Recovery / Error Messages Clarity
 - Lines of Code
 - Learning Curve
-- Community Support
+- Community Support (aktive Developer, offene Issues, ...)
 
 Not quite as useful measurements:
 - Code Readability
