@@ -1,11 +1,35 @@
-#import "lib/lib.typ": thu, abstract, title-page
+#import "lib/lib.typ": abstract, thu, title-page
 #import "lib/bib.typ": load-bib
 
-#include "files/00_titlepage.typ"
-
+#include "structure/00_title_page.typ"
 #pagebreak()
 
-#outline()
+#include "structure/01_own_work.typ"
+#pagebreak()
+
+#include "structure/02_abstract.typ"
+#pagebreak()
+
+#include "structure/03_acknowledgements.typ"
+#pagebreak()
+
+#include "structure/04_toc.typ"
+#pagebreak()
+
+#include "structure/05_introduction.typ"
+#pagebreak()
+
+#include "structure/06_related_work.typ"
+#pagebreak()
+
+#include "structure/07_method.typ"
+#pagebreak()
+
+#include "structure/08_conclusion_future.typ"
+#pagebreak()
+
+#include "structure/09_references.typ"
+#pagebreak()
 
 #show: thu.with(
   title: [Plugin System's in Rust],
@@ -21,17 +45,17 @@
   figure-supplement: [Fig.],
 )
 
-#abstract([
-  Somethign something what approaches are there to setup plugin systems in Rust. What are the pros and cons...
-])
+= Code Snippet 
 
-#let details = toml("./metadata.toml")
-
-= Metadata University...
-
-#details.degree_program
-
-#title-page(is-english: true)
+#set align(left)
+#figure(
+  align(left, ```rust
+  fn main() {
+  prinln!("Hello world!")
+  }
+  ```),
+  caption: [Rust Code],
+)
 
 #include "files/00_introduction.typ"
 #include "files/01_overview.typ"

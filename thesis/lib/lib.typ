@@ -1,16 +1,13 @@
 #import "bib.typ": load-bib
 
-
 #let abstract(h: "Abstract", body) = {
   [= #h]
   [#body]
 }
 
-
 #let title-page(is-english: false) = {
+  set align(center)
   let details = toml("../metadata.toml")  
-
-  
 
   if is-english {
     [ Bachelor thesis at Ulm University of Applied Sciences \ ]
@@ -28,7 +25,6 @@
     [ #details.submission_month #details.submission_year \ ]
     [ 1. Gutachter: #details.first_reviewer \ ]
     [ 2. Gutachter: #details.second_reviewer \ ]
-
   }
 }
 
