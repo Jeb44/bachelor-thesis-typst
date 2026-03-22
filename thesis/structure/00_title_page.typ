@@ -1,14 +1,4 @@
-#import "../lib/lib.typ": title-page
-
-#let signature-line(width: 10em) = {
-  box(
-    height: 1.2em,
-    width: width,
-    fill: white,
-    stroke: (bottom: 1pt + black),
-    [ ],
-  )
-}
+#import "../lib/lib.typ": title-page, signature-line
 
 #set rect(stroke: none)
 
@@ -25,10 +15,6 @@
 )
 
 
-#set align(right)
-#set align(bottom)
 #signature-line(width: 30em)
 
-#h(12%)
-#text(style: "italic")[Place, Date, Signature]
 

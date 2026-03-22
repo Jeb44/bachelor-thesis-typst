@@ -1,5 +1,20 @@
 #import "bib.typ": load-bib
 
+#let signature-line(width: 10em, under_line: "Place, Date, Signature") = {
+  set align(right)
+  set align(bottom)
+  box(
+    height: 1.2em,
+    width: width,
+    fill: white,
+    stroke: (bottom: 1pt + black),
+    [ ],
+  )
+  linebreak()
+  h(12%)
+  text(style: "italic")[#under_line]
+}
+
 #let abstract(h: "Abstract", body) = {
   [= #h]
   [#body]
