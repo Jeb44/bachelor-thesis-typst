@@ -7,6 +7,20 @@
 #include "structure/01_own_work.typ"
 #pagebreak()
 
+#show: thu.with(
+  title: [Plugin System's in Rust],
+  authors: (
+    (
+      name: "Gabriel Zimmermann",
+      // department: [Co-Founder],
+      // organization: [Typst GmbH],
+      // location: [Berlin, Germany],
+      // email: "haug@typst.app"
+    ),
+  ),
+  figure-supplement: [Fig.],
+)
+
 #include "structure/02_abstract.typ"
 #pagebreak()
 
@@ -25,25 +39,14 @@
 #include "structure/07_method.typ"
 #pagebreak()
 
-#include "structure/08_conclusion_future.typ"
+#include "structure/08_results.typ"
 #pagebreak()
 
-#include "structure/09_references.typ"
+#include "structure/09_conclusion_future.typ"
 #pagebreak()
 
-#show: thu.with(
-  title: [Plugin System's in Rust],
-  authors: (
-    (
-      name: "Gabriel Zimmermann",
-      // department: [Co-Founder],
-      // organization: [Typst GmbH],
-      // location: [Berlin, Germany],
-      // email: "haug@typst.app"
-    ),
-  ),
-  figure-supplement: [Fig.],
-)
+#include "structure/10_references.typ"
+#pagebreak()
 
 = Code Snippet 
 
@@ -57,15 +60,15 @@
   caption: [Rust Code],
 )
 
-#include "files/00_introduction.typ"
-#include "files/01_overview.typ"
-#include "files/02_methods.typ"
+//#include "files/00_introduction.typ"
+//#include "files/01_overview.typ"
+//#include "files/02_methods.typ"
 
-#include "files/03_notes_dynamic.typ"
+//#include "files/03_notes_dynamic.typ"
 
-#pagebreak()
+//#pagebreak()
 
-#include "files/0y_safety.typ"
+//#include "files/0y_safety.typ"
 
-#include "files/0y_performance.typ"
+//#include "files/0y_performance.typ"
 

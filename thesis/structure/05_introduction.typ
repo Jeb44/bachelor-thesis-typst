@@ -1,11 +1,15 @@
 
+/*
+ Introduce the problem, explain the significance of the problem and the motivation for
+the thesis.
+ Just by reading your Introduction and your section Conclusion and future work, a reader
+unfamiliar with the subject area should be able to understand which problem you are
+solving in which field, and within what scope you found a solution.
+*/
+
+
 = Introduction
 
-== Definitions
-
-=== Plugin System
-
-=== ABI
 
 == Motivation
 
