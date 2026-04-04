@@ -60,15 +60,4 @@
   caption: [Rust Code],
 )
 
-//#include "files/00_introduction.typ"
-//#include "files/01_overview.typ"
-//#include "files/02_methods.typ"
-
-//#include "files/03_notes_dynamic.typ"
-
-//#pagebreak()
-
-//#include "files/0y_safety.typ"
-
-//#include "files/0y_performance.typ"
 

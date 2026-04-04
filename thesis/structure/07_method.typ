@@ -31,14 +31,87 @@ generally provide sufficient and adequate means of expression.
 
 = Methods
 
-#lorem(100)
+== "Analysis of the requirements"
+
+Goal of the research was to analyse the following points:
+- performance
+- development complexities
+- limitations
+- safety
+- interoperability
 
 
-== Rust API
+
+=== Performance
+
+Only "pure" quantitative measurement will be the performance and maybe safety (using safety levels).
+
+Using criterion and gungraun benchmarks. Not a perfect measurement, but it should give us enough hints about what happens behind the scenes.
+
+Using black_box, we can ensure that the iternal code isn't hyper-optimized by the compiler, which can lead to more accurate benchmarks.
+
+Gungruan uses valgrind internally.
+
+Benchmark: To test all of this, we use a simple temperature simulation, where an random amount of sensors will pick up the data. 
+
+Benches are run with the follolwing set of configurations:
+
+- run app "regarulary" with black_box // probably not interesting for the result itself
+- run average temperature fusion code with black_box once (sensors: 1 vs. 1000000)
+- run average temperature fusion code without black_box (sensors: 1 vs. 1000000)
+
+=== Evaluation
+
+Gunguan helps us see the internal required instructions on "my" CPU. This result should correlate with the actual run time using criterion. We can then reason about the expected overhead of a choosen approad.
+
+=== Development complexities
+
+Subjective, but also Qualitative Meaurement
+
+How will this impact a development team? This might just be an extra Evaluation of Limitations
+
+
+=== Limitations
+
+Might be part of "complexities"??
+
+Qualitative Meaurement
+
+=== Safety
+
+Atemmpting Quantative by using safety levels.
+
+Rust Lanuage generally very safe. Errors often need to be "forced" or careless usage of unwinding. @nomicon_unwinding
+
+=== Interoperability
+
+How flexible are the presented approaches? Can they be linked with other libraries?
+
+
+== "Potential approaches and problems"
+
+baseline for loading libs is the libloading crate
+
+when analysing the C ABI, we will discover, that different crates handle different parts... differently (sum types and so on)
 
 
 
-=== Unstable Rust ABI 
+=== Unstable Rust ABI
+
+
+=== C ABI
+
+
+=== IPC
+
+different structure. communication over serialization
+
+
+== "Selected approach and detailed solutions"
+
+Technically speaking i am covering many approaches...
+
+=== Unstable Rust ABI / Libloading basics
 
 
 
@@ -46,11 +119,9 @@ generally provide sufficient and adequate means of expression.
 
 
 
-== C ABI
+=== C ABI
 
 
-
-=== "Raw" usage
 
 
 
@@ -62,9 +133,6 @@ generally provide sufficient and adequate means of expression.
 
 
 
-== IPC
-
-
 
 === Crate "rust_bridge" (googling this is horrible qwq)
 
@@ -73,5 +141,9 @@ generally provide sufficient and adequate means of expression.
 === Other crates
 
 
+== "Software design"
+
+
+== Implementation
 
 

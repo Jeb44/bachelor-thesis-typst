@@ -199,7 +199,17 @@ Rust doesn’t just support memory safety, it supports “X-safety”: The abili
 
 [Talk](https://www.youtube.com/watch?v=Ba7fajt4l1M)
 
-Interesting, but not neccessary for my thesis.
+Interesting, but not main focus of my thesis. Good for reasoning about handling "unsafe" code.
+
+## Demystifying unsafe code
+
+Unsafe code is something we, as Rust programmers, have a complicated relationship with. Some shrug it off as "it's fine, it's just C", while others declare any use of unsafe as irresponsible and a strike against any code that uses it. Many of us sit somewhere in between, often because we are unsure what this unsafe thing even really is. Is it truly as disastrous as some say, or is it really just harmless and overblown as others claim? In this talk, we explore the pages of the nomicon and take a look at what unsafe really means, why it is dangerous, why it is sometimes useful nonetheless, and how to deal with it responsibly.
+
+*From*: Rust NYC
+
+*By*: Jon Gjengset
+
+[Talk](https://www.youtube.com/watch?v=QAz-maaH0KM)
 
 ## Dude, Where's My C?
 
