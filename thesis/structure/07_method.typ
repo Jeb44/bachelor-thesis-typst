@@ -33,6 +33,8 @@ generally provide sufficient and adequate means of expression.
 
 == "Analysis of the requirements"
 
+
+
 Goal of the research was to analyse the following points:
 - performance
 - development complexities
@@ -42,23 +44,28 @@ Goal of the research was to analyse the following points:
 
 
 
-=== Performance
+=== Performance Overhead
 
-Only "pure" quantitative measurement will be the performance and maybe safety (using safety levels).
+In this thesis, we are interested in the performance overhead when calling the plugin system's API. To achieve this, we will first measure the setup time (i.e. loading a library into memory, creating an object, ...), then we measure the actual function execution time. This approach will be tested against a simple temperature fusion, with parameters ranging from one sensor to one million sensors.
 
-Using criterion and gungraun benchmarks. Not a perfect measurement, but it should give us enough hints about what happens behind the scenes.
+The expected result is that the setup time will be higher for approaches that require more complex initialization (e.g., C ABI with manual FFI), while the function execution time should be relatively similar across approaches, with some overhead for approaches that involve more indirection (e.g., C ABI with dynamic loading). For the IPC approach, the performance overhead will likely be higher due to the need for serialization and deserialization of data, as well as the communication overhead between processes.
 
-Using black_box, we can ensure that the iternal code isn't hyper-optimized by the compiler, which can lead to more accurate benchmarks.
+To measure the results, we are using the criterion and gungraun crate for our benchmarking. The written benchmark will give us separate results for the setup time and the function execution time, which allows us to analyze the overhead of each approach in more detail.
 
-Gungruan uses valgrind internally.
+As noted by the criterion documentation, the criterion crate is a statics-driven micro-benchmarking library, which aims to provide strong statistical confidence in detecting and estimating the size of performance improvements and regressions. @doc-criterion
 
-Benchmark: To test all of this, we use a simple temperature simulation, where an random amount of sensors will pick up the data. 
+As stated by the gungraun documentation, "gungraun is a one-shot benchmarking harness and framework which uses Valgrind’s Callgrind, Cachegrind, and DHAT to provide extremely accurate and consistent measurements of Rust code, making it perfectly suited to run in environments like a CI." @doc-gungraun
 
-Benches are run with the follolwing set of configurations:
+We hope by combining both of these tools, we can get a comprehensive understanding of the performance characteristics of each approach, and how they compare to each other in terms of setup time and function execution time.
 
+In Rust benchmarking, wrapping inputs and intermediate values in black_box is essential to prevent the compiler from optimizing away the code you intend to measure. Because Rust's optimizer is aggressive, it may detect that a function's result is unused or that an input is constant, leading it to eliminate the entire computation or hoist it out of the loop, resulting in artificially low (and inaccurate) timing data. The std::hint::black_box function acts as an opaque barrier, signaling to the compiler that the value is unknown and must be treated as having side effects, thereby forcing it to execute the code exactly as written within the benchmark. @doc-black-box Each benchmark will be run with and without black_box to compare the results and understand the impact of compiler optimizations on our measurements.
+
+/*Benches are run with the follolwing set of configurations:
 - run app "regarulary" with black_box // probably not interesting for the result itself
 - run average temperature fusion code with black_box once (sensors: 1 vs. 1000000)
 - run average temperature fusion code without black_box (sensors: 1 vs. 1000000)
+*/
+
 
 === Evaluation
 
