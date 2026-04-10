@@ -50,6 +50,8 @@
   urldate={2026-03-02}
 }
 
+
+
 @online{apple-plugin,
   title={Plug-in Architectures},
   author={Apple Inc.},
@@ -75,20 +77,28 @@
   urldate={2026-04-01}
 }
 
-@online{so-abi-requested,
+@online{rfc-1675,
   title={Make Rust ABI stable enough to provide plugins functionality #1675},
   author={iddm},
   year=2016,
-  url={https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/Plugin.html},
+  url={https://github.com/rust-lang/rfcs/issues/1675},
   urldate={2026-04-01}
 }
 
-@online{so-abi-closed,
+@online{rfc-600,
   title={Define a Rust ABI #600},
   author={steveklabnik},
   year=2015,
   url={https://github.com/rust-lang/rfcs/issues/600},
   urldate={2026-04-01}
+}
+
+@online{internals-modular-abi,
+  title={A Stable Modular ABI for Rust},
+  author={isaac},
+  year=2020,
+  url={https://internals.rust-lang.org/t/a-stable-modular-abi-for-rust/12347},
+  urldate={2026-04-07}
 }
 
 @online{null-deref,
@@ -102,7 +112,6 @@
 % is this the correct author like this?
 @online{doc-criterion,
   title={Crate criterion},
-  author={criterion-rs developers},
   year=2026,
   url={https://docs.rs/criterion/0.8.2/criterion/},
   urldate={2026-04-06}
@@ -119,8 +128,46 @@
 
 @online{doc-black-box,
   title={Function black_box},
-  author={The Rust Project Developers},
+  author={The Rust Foundation},
   year=2026,
   url={https://doc.rust-lang.org/beta/std/hint/fn.black_box.html},
   urldate={2026-04-06}
+}
+
+@online{stabby-tutorial-abi-stable-types,
+  title={Stabby: Defining ABI-stable types},
+  author={The Stabby Developers},
+  year=2026,
+  url={https://docs.rs/stabby/latest/stabby/_tutorial_/index.html#defining-abi-stable-types},
+  urldate={2026-04-07}
+}
+
+@online{nomicon-repr-c,
+  title={The Rustonomicon: Other Reprs},
+  author={The Rust Project Developers},
+  year=2026,
+  url={https://doc.rust-lang.org/nomicon/other-reprs.html#reprc},
+  urldate={2026-04-07}
+}
+
+% Which unimplemented (or nightly only) features are you looking for to be
+stabilized? - Stable ABI:
+% 13.92% Would unblock my use-case
+% 23.55% Would improve my code
+%
+% Which of the following aspects of Rust present non-trivial problems to your
+programming productivity?
+% a) Interoperating with other Languages (e.g. C or C++)
+% - 13.03% Big problem for me
+% - 38.06% Could be improved, but does not limit me
+% b) Implementing dynamic library plugins
+% - 13.03% Big problem for me
+% - 29.31% Could be improved, but does not limit me
+@online{survey-2025-wishes-challenges,
+  title={Challenges and wishes about Rust},
+  author={The Rust Foundation},
+  year=2026,
+  url={Which unimplemented (or nightly only) features are you looking for to be
+stabilized?},
+  urldate={2026-04-10}
 }

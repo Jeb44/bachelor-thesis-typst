@@ -1,8 +1,6 @@
 /*
- This section presents the procedure you used to prove that your solution from the Method
-section meets the requirements.
- Typically, you will need to describe why the selected test scenarios are at all suitable for
-a substantiated statement, which characteristics the test has, etc.
+ This section presents the procedure you used to prove that your solution from the Method section meets the requirements.
+ Typically, you will need to describe why the selected test scenarios are at all suitable for a substantiated statement, which characteristics the test has, etc.
  In addition, for each test you must specify with which parameterization and in which
 environment etc. the test was carried out, and which results this gave (objective, factual).
  Subsequently, you need to evaluate the significance of these results (subjective, evaluation).
@@ -22,5 +20,24 @@ were as expected, deviated etc.
 
 
 = Results
+
+== Validation of the overall concept
+
+Validating the Performance Overhead is done using gungraun and criterion benchmarks and then comparing the results with each other.
+
+
+
+
+== Description and motivation for the test cases
+
+== Overview and evaluation of the acquired results
+
+=== Unstable Rust ABI
+
+=== Stable Rust ABI (crate)
+
+=== stabby (crate)
+
+=== rust_bridge (crate)
 
 #lorem(100)

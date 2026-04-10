@@ -1,27 +1,30 @@
 /*
 • This is where all the relevant terms and topics are introduced, which are used in particular in the Methods section, and therefore need to be understood by the reader.
  At the same time, existing approaches are named and discussed, and cited with
-appropriate references.
- Classification should always be made in terms of their significance for the objectives of your
-thesis.
+appropriate references. 
+Classification should always be made in terms of their significance for the objectives of your thesis.
  It is not a problem to make the following argument:
-– Problem X is also examined in [..], but with the focus on…, which is not the main
-focus here.
-– The approach in X appears to be suitable, so it is worth examining algorithm Y in closer
-detail.
-– According to [..], the software package X represents a standard in the field of ..., so it
-should also be used for the work in this thesis.
+– Problem X is also examined in [..], but with the focus on…, which is not the main focus here.
+– The approach in X appears to be suitable, so it is worth examining algorithm Y in closer detail.
+– According to [..], the software package X represents a standard in the field of ..., so it should also be used for the work in this thesis.
 */
 
-= Related work
+= Related work <rel_work>
 
 == Existing work
 
-As of 2024, the Rust ecosystem remains in a state of deliberate ABI instability, a condition that has persisted despite years of community advocacy and formal proposals. The most significant attempt to address this was RFC #1675 ("Make Rust ABI stable enough to provide plugins functionality"), which proposed a "stable modular ABI" to enable runtime loading of Rust libraries without C interop. However, the proposal was ultimately deferred, with the compiler team citing the high cost of freezing internal representations that are critical for future optimizations, such as constant evaluation and monomorphization strategies (Rust Lang RFCs, 2016; Rust Internals, 2020). Recent discourse at conferences like RustConf and FOSDEM reinforces this stance; speakers such as Niko Matsakis and others have emphasized that stabilizing the ABI would "lock in" implementation details, potentially hindering the compiler's ability to evolve (Matsakis, RustConf 2023). Instead of a native solution, the community has converged on pragmatic workarounds. The prevailing consensus, reflected in technical talks and blog posts from 2023-2024, is that the C ABI remains the only reliable standard for binary interoperability, forcing developers to adopt verbose extern "C" interfaces or rely on third-party crates like abi_stable to simulate stability through #[repr(C)] wrappers and runtime checks (NullDeref, 2023; Arroyo Blog, 2023). While experimental efforts continue to explore WebAssembly as a language-agnostic ABI alternative, no native Rust-to-Rust stable ABI has been implemented, leaving plugin developers to navigate a fragmented landscape of manual FFI management and abstraction layers.
+As of 2026, the Rust ecosystem remains in a state of deliberate ABI instability, a condition that has persisted despite years of community advocacy and formal proposals. The most significant attempt to address this were RFC #1675 @rfc-1675 and RFC #600 @rfc-600 ("Make Rust ABI stable enough to provide plugins functionality"), which proposed a "stable modular ABI" to enable runtime loading of Rust libraries without C interop. However, the proposal was ultimately deferred, with the compiler team citing the high cost of freezing internal representations that are critical for future optimizations, such as constant evaluation and monomorphization strategies @rfc-1675. Additionally, it was proposed to allow for a modular ABI, where a developer can specify the ABI by using macro system. @internals-modular-abi. Recent discourse at conferences like RustConf and FOSDEM reinforces this stance; speakers such as Niko Matsakis and others have emphasized that stabilizing the ABI would "lock in" implementation details, potentially hindering the compiler's ability to evolve (Matsakis, RustConf 2023). Instead of a native solution, the community has converged on pragmatic workarounds. The prevailing consensus, reflected in technical talks and blog posts from 2023-2024, is that the C ABI remains the only reliable standard for binary interoperability, forcing developers to adopt verbose extern "C" interfaces or rely on third-party crates like abi_stable to simulate stability through ``#[repr(C)]`` wrappers and runtime checks (NullDeref, 2023; Arroyo Blog, 2023). While experimental efforts continue to explore WebAssembly as a language-agnostic ABI alternative, no native Rust-to-Rust stable ABI has been implemented, leaving plugin developers to navigate a fragmented landscape of manual FFI management and abstraction layers.
+
+TODO: Fix links with the concrete answer of the dev team...
+
+// Add here: Why safety is not considered?
+
+Currently only rust std library and ferrocene compiler verified. Therefore, most code that needs to be verified is already limited and the solutions that can be used for Plugins are limited. Not the focus of this thesis. // TODO: Add reference to safety verification
+
 
 == Foundational Concepts
 
-To contextualize the challenges of plugin systems in Rust, it is essential to establish precise definitions of the core architectural components involved: the Application Binary Interface (ABI), plugin architectures, and dynamic linking mechanisms.
+To contextualize the challenges of plugin systems in Rust, it is essential to establish precise definitions of the core architectural components involved: the ABI, how stable the Rust Type System is for the ABI, plugin architectures, and dynamic linking mechanisms.
 
 === Application Binary Interface (ABI)
 
@@ -35,6 +38,43 @@ While the Application Programming Interface (API) defines the source-code level 
 - *Exception Handling*: The mechanism for propagating errors or exceptions across module boundaries.
 
 Relevance to Rust: In the context of Rust, the lack of a standardized ABI is a deliberate design choice. As noted by the Rust compiler team, the ABI is "deliberately unstable" to allow the compiler to optimize memory layouts and calling conventions aggressively without being constrained by backward compatibility requirements (Rust Internals, 2020). This contrasts with the C ABI, which is strictly defined and stable, serving as the de facto standard for binary interoperability.
+
+=== Rust Types and ABI Instability
+
+@stabby-tutorial-abi-stable-types
+
+*Product types* (or structs): is it ordered? is it aligned?
+
+C is always aligned and source-ordered.
+
+Rust fields also also aligned, but the ordered is minimized for memory usage.
+
+Rust can enforce this by using #[repr(C)], but this is not the default, and the compiler can change the layout for optimization purposes. This means that without explicit annotations, the memory layout of a Rust struct is not guaranteed to be stable across different compiler versions or optimization levels, which can lead to binary incompatibility when used in a plugin system.
+
+
+
+*Sum types* (or enums): how to distinguih the variants? where is the data?
+
+Not supported by C. Can be done using a tagged union, but you need to give each type a specific number (usually a enum).
+
+Rust may be put in a niche (like common padding or using type's forbidden value).
+
+Example with ``Cow<'a, str>``: Can waste 7 bytes for padding on a 64-bit architecture.
+
+Rust guarantees that the layout of a sum type is not clashing with the layout of a product type.
+
+*Unit types* (()): are they zero-sized? what about references?
+
+Doesn't exist in C as zero-sized type. ZSTs are undefined behavior.
+
+#line()
+
+As Pierre states, for a stable ABI all linkees must agree on an ABI for each symbol @stabby-tutorial-abi-stable-types (double check, maybe i need to link the talk instead...).
+
+Note stable due to changes in compiler version, optimization level, target architecture, using `-Z randomize-layout` and so on. This is a fundamental problem for plugin systems in Rust, as the host and the plugin may be compiled with different versions of the compiler or different optimization flags, leading to binary incompatibility.
+
+A few examples as to why the rust ABI is not stable yet can be found in niche optimizations: enums with muiltiple data variant optimizations (1.65), field ordering optimizations (1.67), `Cow<str>` regression (1.70), and more.
+
 
 
 === Plugin Systems

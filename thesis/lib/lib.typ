@@ -64,7 +64,7 @@
   set document(title: title, author: authors.map(author => author.name))
 
   // Set the body font.
-  set text(font: "DejaVu Sans", size: 11pt, spacing: .35em)
+  set text(font: "Liberation Sans", size: 11pt, spacing: .35em)
 
   // Enums numbering
   set enum(numbering: "1)a)i)")
@@ -98,10 +98,19 @@
 
   // Code blocks
   show raw: set text(
-    font: "DejaVu Sans",
+    font: "Source Code Pro",
     ligatures: false,
     size: 1em / 0.8,
     spacing: 100%,
+    weight: "regular",
+  )
+
+  show raw.where(block: false, /*lang: none*/): it => box(
+    fill: color.linear-rgb(84.69%, 87.14%, 89.63%),
+    inset: (x: 3pt, y: 0pt),
+    outset: (y: 3pt),
+    radius: 2pt,
+    text([#it])
   )
 
   // Configure the page and multi-column properties.

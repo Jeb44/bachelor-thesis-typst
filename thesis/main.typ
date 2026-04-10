@@ -48,16 +48,8 @@
 #include "structure/10_references.typ"
 #pagebreak()
 
+/*
 = Code Snippet 
 
-#set align(left)
-#figure(
-  align(left, ```rust
-  fn main() {
-  prinln!("Hello world!")
-  }
-  ```),
-  caption: [Rust Code],
-)
-
+*/
 

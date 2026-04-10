@@ -18,7 +18,6 @@ retrospectively – i.e. to critically assess and categorize your work.
 */
 
 
-== Conclusion and Future Work
-
+= Conclusion and Future Work
 
 #lorem(100)
