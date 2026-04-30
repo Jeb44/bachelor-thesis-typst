@@ -8,7 +8,7 @@
 #pagebreak()
 
 #show: thu.with(
-  title: [Plugin System's in Rust],
+  title: [Plugin Architectures with Rust - an Analysis of Obstacles and Prospects],
   authors: (
     (
       name: "Gabriel Zimmermann",

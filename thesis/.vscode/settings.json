@@ -1,15 +1,23 @@
 {
     "cSpell.words": [
+        "bindgen",
+        "blackbox",
+        "Blackboxed",
         "Cachegrind",
         "Callgrind",
+        "cbindgen",
         "DHAT",
+        "fuser",
         "gungraun",
         "Interoperating",
         "Interprocess",
         "libloading",
+        "monomorphization",
         "nomicon",
         "println",
+        "rustbridge",
         "stabby",
-        "urldate"
+        "urldate",
+        "vtables"
     ]
 }
