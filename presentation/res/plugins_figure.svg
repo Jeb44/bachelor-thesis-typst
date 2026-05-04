@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 320" width="380" height="320"
+     font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+
+  <!-- ===== Host Application ===== -->
+  <!--
+    Right edge has three concave semicircle sockets.
+    Socket 1: center (180, 105), r=25, y from 80 to 130
+    Socket 2: center (180, 175), r=25, y from 150 to 200
+    Socket 3: center (180, 245), r=25, y from 220 to 270
+    Going clockwise: top-left → top-right → down edge (with sockets) → bottom-right → bottom-left → close
+  -->
+  <path d="
+    M 20,25
+    H 180
+    V 80
+    A 25,25 0 0,0 180,130
+    V 150
+    A 25,25 0 0,0 180,200
+    V 220
+    A 25,25 0 0,0 180,270
+    V 295
+    H 20
+    Z"
+    fill="#f9f9f9" stroke="#444" stroke-width="1.5"/>
+
+  <!-- Label background strip -->
+  <rect x="20" y="25" width="160" height="28" rx="0" fill="#e8e8e8"/>
+  <text x="100" y="44" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">Host application</text>
+
+  <!-- ===== Valid plug-in 1 (top — fits socket 1) ===== -->
+  <!--
+    Left edge has a convex tab: center (200, 105), r=25, goes from y=80 to y=130 bulging LEFT to x=175
+    Body: x 200–310, y 70–140
+  -->
+  <path d="
+    M 200,70
+    H 310
+    V 140
+    H 200
+    V 130
+    A 25,25 0 0,1 200,80
+    Z"
+    fill="#f9f9f9" stroke="#444" stroke-width="1.5"/>
+  <text x="255" y="101" text-anchor="middle" font-size="12" fill="#222">Valid</text>
+  <text x="255" y="118" text-anchor="middle" font-size="12" fill="#222">plug-in</text>
+
+  <!-- ===== Valid plug-in 2 (middle — fits socket 2) ===== -->
+  <path d="
+    M 200,140
+    H 310
+    V 210
+    H 200
+    V 200
+    A 25,25 0 0,1 200,150
+    Z"
+    fill="#f9f9f9" stroke="#444" stroke-width="1.5"/>
+  <text x="255" y="171" text-anchor="middle" font-size="12" fill="#222">Valid</text>
+  <text x="255" y="188" text-anchor="middle" font-size="12" fill="#222">plug-in</text>
+
+  <!-- ===== Invalid plug-in (bottom — does NOT fit socket 3, offset right) ===== -->
+  <!--
+    Shifted 18px to the right so its tab hangs in open space (doesn't align with socket 3).
+    Tab is square/rectangular to visually indicate mismatch.
+  -->
+  <path d="
+    M 218,218
+    H 328
+    V 288
+    H 218
+    V 270
+    L 198,270
+    L 198,228
+    L 218,228
+    Z"
+    fill="#f9f9f9" stroke="#444" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="273" y="249" text-anchor="middle" font-size="12" fill="#444">Invalid</text>
+  <text x="273" y="266" text-anchor="middle" font-size="12" fill="#444">plug-in</text>
+
+</svg>
