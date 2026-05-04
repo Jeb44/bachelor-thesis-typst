@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" width="700" height="260" font-family="sans-serif">
+
+  <!-- Background -->
+  <rect width="700" height="260" fill="white"/>
+
+
+
+  <!-- Process A box -->
+  <rect x="30" y="40" width="170" height="160" rx="10" ry="10"
+        fill="white" stroke="#4a7eb5" stroke-width="2"/>
+  <rect x="30" y="40" width="170" height="30" rx="10" ry="10"
+        fill="#4a7eb5"/>
+  <rect x="30" y="56" width="170" height="14" fill="#4a7eb5"/>
+  <text x="115" y="61" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Process A</text>
+  <!-- Address space label -->
+  <text x="115" y="100" text-anchor="middle" font-size="10" fill="#666">private address space</text>
+  <!-- Memory blocks -->
+  <rect x="55" y="108" width="110" height="22" rx="4" fill="#dce9f7" stroke="#4a7eb5" stroke-width="1"/>
+  <text x="110" y="123" text-anchor="middle" font-size="10" fill="#333">Stack / Heap</text>
+  <rect x="55" y="136" width="110" height="22" rx="4" fill="#dce9f7" stroke="#4a7eb5" stroke-width="1"/>
+  <text x="110" y="151" text-anchor="middle" font-size="10" fill="#333">Code / Data</text>
+
+
+  <!-- Process B box -->
+  <rect x="500" y="40" width="170" height="160" rx="10" ry="10"
+        fill="white" stroke="#e07b39" stroke-width="2"/>
+  <rect x="500" y="40" width="170" height="30" rx="10" ry="10"
+        fill="#e07b39"/>
+  <rect x="500" y="56" width="170" height="14" fill="#e07b39"/>
+  <text x="585" y="61" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Process B</text>
+  <text x="585" y="100" text-anchor="middle" font-size="10" fill="#666">private address space</text>
+  <rect x="525" y="108" width="110" height="22" rx="4" fill="#fde8d4" stroke="#e07b39" stroke-width="1"/>
+  <text x="580" y="123" text-anchor="middle" font-size="10" fill="#333">Stack / Heap</text>
+  <rect x="525" y="136" width="110" height="22" rx="4" fill="#fde8d4" stroke="#e07b39" stroke-width="1"/>
+  <text x="580" y="151" text-anchor="middle" font-size="10" fill="#333">Code / Data</text>
+
+
+  <!-- IPC Channel box -->
+  <rect x="240" y="90" width="220" height="80" rx="10" ry="10"
+        fill="#eefaf3" stroke="#2ea86a" stroke-width="2"/>
+  <text x="350" y="115" text-anchor="middle" font-size="12" fill="#1a7a4a" font-weight="bold">IPC Channel</text>
+  <text x="350" y="133" text-anchor="middle" font-size="10" fill="#2ea86a">Pipe · Socket · Shared Memory</text>
+  <text x="350" y="151" text-anchor="middle" font-size="10" fill="#2ea86a">Message Queue · D-Bus · ...</text>
+
+  <defs>
+    <marker id="arr-both-start" markerWidth="8" markerHeight="8" refX="1" refY="3.5" orient="auto">
+      <path d="M8,0 L0,3.5 L8,7 Z" fill="#555"/>
+    </marker>
+    <marker id="arr-both-end" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- A ↔ IPC -->
+  <line x1="200" y1="130" x2="238" y2="130" stroke="#555" stroke-width="2"
+        marker-start="url(#arr-both-start)" marker-end="url(#arr-both-end)"/>
+  <!-- IPC ↔ B -->
+  <line x1="462" y1="130" x2="500" y2="130" stroke="#555" stroke-width="2"
+        marker-start="url(#arr-both-start)" marker-end="url(#arr-both-end)"/>
+
+  <!-- Isolation label -->
+  <text x="350" y="35" text-anchor="middle" font-size="11" fill="#888" font-style="italic">Processes are isolated — no shared memory by default</text>
+
+</svg>

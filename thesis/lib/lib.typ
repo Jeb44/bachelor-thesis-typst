@@ -16,7 +16,7 @@
 }
 
 #let abstract(h: "Abstract", body) = {
-  [= #h]
+  [#heading(outlined: false, numbering: none)[#h]]
   [#body]
 }
 
@@ -27,19 +27,23 @@
   if is-english {
     [ Bachelor thesis at Ulm University of Applied Sciences \ ]
     [ Department of Computer Science \ ]
-    [ Degree Program #details.degree_program \ ]
-    [ Presented by #details.student_name \ ]
+    [ #linebreak()]
+    [ Degree Program *#details.degree_program* \ ]
+    [ #linebreak()]
+    [ Presented by \ ]
+    [ *#details.student_name* \ ]
     [ #details.submission_month #details.submission_year \ ]
-    [ 1. Reviewer: #details.first_reviewer \ ]
-    [ 2. Reviewer: #details.second_reviewer \ ]
+    [ #linebreak()]
+    [ 1. Reviewer: *#details.first_reviewer* \ ]
+    [ 2. Reviewer: *#details.second_reviewer* \ ]
   } else {
     [ Bachelorarbeit an der Technischen Hochschule Ulm \ ]
     [ Fakultät Informatik \ ]
-    [ Studiengang #details.degree_program \ ]
-    [ vorgelegt von #details.student_name \ ]
+    [ Studiengang *#details.degree_program* \ ]
+    [ vorgelegt von *#details.student_name* \ ]
     [ #details.submission_month #details.submission_year \ ]
-    [ 1. Gutachter: #details.first_reviewer \ ]
-    [ 2. Gutachter: #details.second_reviewer \ ]
+    [ 1. Gutachter: *#details.first_reviewer* \ ]
+    [ 2. Gutachter: *#details.second_reviewer* \ ]
   }
 }
 

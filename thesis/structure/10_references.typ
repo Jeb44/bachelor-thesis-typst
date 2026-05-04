@@ -11,7 +11,3 @@ CD / DVD of all the necessary tools, source code and instructions etc.
 • You can include brief, explanatory fragments of code in the Implementation section,
 although typically not more than around 10 lines are necessary in each case.
 */
-
-= Listings
-
-#lorem(100)

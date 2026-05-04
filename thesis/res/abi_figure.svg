@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" width="760" height="310" font-family="monospace, sans-serif">
+
+  <rect width="760" height="310" fill="white"/>
+
+  <!-- ═══════════════════════ TITLE STRIP ═══════════════════════ -->
+  <text x="380" y="22" text-anchor="middle" font-size="13" font-family="sans-serif"
+        font-weight="bold" fill="#222">What an ABI Governs</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- TOP HALF: function call crossing the ABI boundary          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Caller box -->
+  <rect x="20" y="35" width="210" height="130" rx="8" fill="#f0f4ff" stroke="#4a7eb5" stroke-width="2"/>
+  <rect x="20" y="35" width="210" height="26" rx="8" fill="#4a7eb5"/>
+  <rect x="20" y="51"  width="210" height="10" fill="#4a7eb5"/>
+  <text x="125" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="white">Host (Caller)</text>
+
+  <text x="36" y="76"  font-size="10" fill="#333">fn main() {</text>
+  <text x="48" y="91"  font-size="10" fill="#4a7eb5">  let r = add(3, 5);</text>
+  <text x="36" y="106" font-size="10" fill="#333">}</text>
+  <!-- register annotation -->
+  <text x="36" y="126" font-size="9" fill="#888" font-style="italic">// args: rdi=3, rsi=5</text>
+  <text x="36" y="140" font-size="9" fill="#888" font-style="italic">// return: rax</text>
+  <text x="36" y="154" font-size="9" fill="#888" font-style="italic">// symbol: add  (no_mangle)</text>
+
+  <!-- Callee box -->
+  <rect x="530" y="35" width="210" height="130" rx="8" fill="#fff4ee" stroke="#e07b39" stroke-width="2"/>
+  <rect x="530" y="35" width="210" height="26" rx="8" fill="#e07b39"/>
+  <rect x="530" y="51"  width="210" height="10" fill="#e07b39"/>
+  <text x="635" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="white">Plugin (Callee)</text>
+
+  <text x="546" y="76"  font-size="10" fill="#333">#[no_mangle]</text>
+  <text x="546" y="91"  font-size="10" fill="#333">pub extern "C" fn</text>
+  <text x="546" y="106" font-size="10" fill="#e07b39">  add(a: u32, b: u32)</text>
+  <text x="546" y="121" font-size="10" fill="#333">  -&gt; u32 { a + b }</text>
+  <!-- register annotation -->
+  <text x="546" y="141" font-size="9" fill="#888" font-style="italic">// reads: rdi, rsi</text>
+  <text x="546" y="155" font-size="9" fill="#888" font-style="italic">// writes: rax</text>
+
+  <!-- ABI boundary -->
+  <rect x="255" y="35" width="250" height="130" rx="8" fill="#f5fbf7" stroke="#2ea86a" stroke-width="2"/>
+  <text x="380" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="#1a7a4a">ABI Contract</text>
+
+  <!-- 4 ABI aspects as small pills -->
+  <!-- Calling Convention -->
+  <rect x="268" y="60" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="74" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Calling Convention — args in rdi, rsi; ret in rax
+  </text>
+  <!-- Data Layout -->
+  <rect x="268" y="84" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="98" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Data Layout — field order, alignment, padding
+  </text>
+  <!-- Name Mangling -->
+  <rect x="268" y="108" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="122" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Name Mangling — symbol name encoding
+  </text>
+  <!-- Exception Handling -->
+  <rect x="268" y="132" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="146" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Exception Handling — panic / unwind safety
+  </text>
+
+  <!-- arrows through ABI boundary -->
+  <defs>
+    <marker id="a-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/>
+    </marker>
+    <marker id="a-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <!-- call -->
+  <line x1="231" y1="90" x2="254" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
+  <text x="242" y="86" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <!-- return -->
+  <line x1="254" y1="112" x2="231" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
+  <text x="242" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
+  <!-- right side -->
+  <line x1="506" y1="90" x2="529" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
+  <text x="517" y="86" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <line x1="529" y1="112" x2="506" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
+  <text x="517" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- BOTTOM HALF: struct layout — C repr vs Rust repr           -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <text x="380" y="192" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="#333">Data Layout: struct { u8, u32, u8 }</text>
+
+  <!-- Legend: byte colours -->
+  <rect x="120" y="200" width="12" height="12" fill="#4a7eb5"/>
+  <text x="136" y="211" font-size="9" font-family="sans-serif" fill="#333">field byte</text>
+  <rect x="210" y="200" width="12" height="12" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="226" y="211" font-size="9" font-family="sans-serif" fill="#333">padding</text>
+
+  <!-- C repr (left) -->
+  <text x="200" y="232" text-anchor="middle" font-size="10" font-family="sans-serif"
+        font-weight="bold" fill="#4a7eb5">#[repr(C)]  — 12 bytes</text>
+
+  <!-- byte grid: u8(1) pad(3) u32(4) u8(1) pad(3) = 12 -->
+  <!-- each cell 30px wide, 24px tall, starting x=50 -->
+  <!-- byte 0: u8 a -->
+  <rect x="50"  y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="65"  y="256" text-anchor="middle" font-size="8" fill="white">a</text>
+  <!-- bytes 1-3: padding -->
+  <rect x="80"  y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="95"  y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <rect x="110" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="125" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <rect x="140" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="155" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <!-- bytes 4-7: u32 b -->
+  <rect x="170" y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="185" y="256" text-anchor="middle" font-size="8" fill="white">b</text>
+  <rect x="200" y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="215" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <rect x="230" y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="245" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <rect x="260" y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="275" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <!-- byte 8: u8 c -->
+  <rect x="290" y="240" width="30" height="24" fill="#4a7eb5"/>
+  <text x="305" y="256" text-anchor="middle" font-size="8" fill="white">c</text>
+  <!-- bytes 9-11: padding -->
+  <rect x="320" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="335" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <rect x="350" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="365" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <rect x="380" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="395" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+
+  <!-- byte index labels -->
+  <text x="65"  y="276" text-anchor="middle" font-size="7" fill="#888">0</text>
+  <text x="95"  y="276" text-anchor="middle" font-size="7" fill="#888">1</text>
+  <text x="125" y="276" text-anchor="middle" font-size="7" fill="#888">2</text>
+  <text x="155" y="276" text-anchor="middle" font-size="7" fill="#888">3</text>
+  <text x="185" y="276" text-anchor="middle" font-size="7" fill="#888">4</text>
+  <text x="215" y="276" text-anchor="middle" font-size="7" fill="#888">5</text>
+  <text x="245" y="276" text-anchor="middle" font-size="7" fill="#888">6</text>
+  <text x="275" y="276" text-anchor="middle" font-size="7" fill="#888">7</text>
+  <text x="305" y="276" text-anchor="middle" font-size="7" fill="#888">8</text>
+  <text x="335" y="276" text-anchor="middle" font-size="7" fill="#888">9</text>
+  <text x="365" y="276" text-anchor="middle" font-size="7" fill="#888">10</text>
+  <text x="395" y="276" text-anchor="middle" font-size="7" fill="#888">11</text>
+
+  <!-- Rust repr (right) — compiler may reorder: u32(4) u8(1) u8(1) pad(2) = 8 bytes -->
+  <text x="590" y="232" text-anchor="middle" font-size="10" font-family="sans-serif"
+        font-weight="bold" fill="#e07b39">#[repr(Rust)]  — may be 8 bytes</text>
+
+  <!-- reordered: b(u32) a(u8) c(u8) pad(2) -->
+  <rect x="450" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="465" y="256" text-anchor="middle" font-size="8" fill="white">b</text>
+  <rect x="480" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="495" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <rect x="510" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="525" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <rect x="540" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="555" y="256" text-anchor="middle" font-size="7" fill="white">b</text>
+  <rect x="570" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="585" y="256" text-anchor="middle" font-size="8" fill="white">a</text>
+  <rect x="600" y="240" width="30" height="24" fill="#e07b39"/>
+  <text x="615" y="256" text-anchor="middle" font-size="8" fill="white">c</text>
+  <rect x="630" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="645" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+  <rect x="660" y="240" width="30" height="24" fill="#e0e0e0" stroke="#aaa" stroke-width="0.5"/>
+  <text x="675" y="256" text-anchor="middle" font-size="7" fill="#888">pad</text>
+
+  <text x="465" y="276" text-anchor="middle" font-size="7" fill="#888">0</text>
+  <text x="495" y="276" text-anchor="middle" font-size="7" fill="#888">1</text>
+  <text x="525" y="276" text-anchor="middle" font-size="7" fill="#888">2</text>
+  <text x="555" y="276" text-anchor="middle" font-size="7" fill="#888">3</text>
+  <text x="585" y="276" text-anchor="middle" font-size="7" fill="#888">4</text>
+  <text x="615" y="276" text-anchor="middle" font-size="7" fill="#888">5</text>
+  <text x="645" y="276" text-anchor="middle" font-size="7" fill="#888">6</text>
+  <text x="675" y="276" text-anchor="middle" font-size="7" fill="#888">7</text>
+
+  <!-- warning annotation -->
+  <text x="380" y="302" text-anchor="middle" font-size="10" font-family="sans-serif"
+        fill="#c0392b" font-style="italic">
+    ⚠ The compiler may reorder fields — a C caller reading offset 8 would get garbage
+  </text>
+
+
+
+</svg>

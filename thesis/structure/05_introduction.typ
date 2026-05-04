@@ -22,7 +22,7 @@ One popular approach is to use C ABI-compatible interfaces, which can provide a 
 Another approach is to use Inter-Process Communication (IPC) mechanisms, which can provide a more flexible and scalable architecture for plugin systems. However, this approach can also introduce additional complexity and overhead, as it requires the management of separate processes and communication channels. This will impact the performance of the plugin system, as IPC can introduce latency and reduce the overall efficiency of the system. However, it can provide better isolation and security for plugins, as they run in separate processes. 
 
 // Research Questions
-In this thesis, we are interested in understanding the advantages and disadvantages of the stated approaches and what Crates are offered within the Rust Ecosystem. Later on, we will evaluate the different approaches based on the performance overhead using a simple benchmark, the resulting development complexity, limitations and interoperability.
+In this thesis, we are interested in understanding how different approaches within the Rust Ecosystem try to solve this problem, and therefore we want to evaluate them based on the performance overhead using a simple benchmark, the resulting development complexity, language limitations and interoperability.
 
 
 

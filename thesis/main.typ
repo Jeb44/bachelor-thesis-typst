@@ -44,12 +44,3 @@
 
 #include "structure/09_conclusion_future.typ"
 #pagebreak()
-
-#include "structure/10_references.typ"
-#pagebreak()
-
-/*
-= Code Snippet 
-
-*/
-

@@ -29,7 +29,8 @@ All our plugins have to implement the following trait:
 #figure(
   align(left, ```rust
   trait Fuser {
-    fn fuse(&self, data: &[SensorData]) -> Result<SensorData, Box<dyn std::error::Error>>;
+    fn fuse(&self, data: &[SensorData])
+    -> Result<SensorData, Box<dyn std::error::Error>>;
   }
   ```),
   caption: [Fuser trait definition],
@@ -47,19 +48,24 @@ The ```rust Fuser``` trait defines a single method, ```rust fuse(...)```, which 
   caption: [SensorData struct definition],
 )
 
-In our benchmark, a ```rust SensorData``` represents a tuple of temperate and deviation. From a practical sense, many temperature sensors have a small margin of error (deviation), which can be used to calculate a more accurate temperature reading by fusing the data from multiple sensors.
+In our benchmark, a ```rust SensorData``` represents a tuple of temperature and deviation. From a practical sense, many temperature sensors have a small margin of error (deviation), which can be used to calculate a more accurate temperature reading by fusing the data from multiple sensors.
 
 The implementation of the ```rust fuse(...)``` method will be the same for all plugins, as we want to focus on the performance of the different approaches, and not on the implementation of the plugin itself. The only difference will be the way we load and execute the plugin, which will be the focus of our evaluation. In some cases, we needed to make some adjustments to the function parameters and return types to fit the requirements of the different approaches. These differences will be explained in the respective sections.
 
 As a control group, we ran the same benchmark using a static and dynamic variations first, without the use of any Plugin logic, which evaluates to ```rust AverageFuser``` and ```rust Box<dyn Fuser>``` respectively.
 
-== Description and motivation for the test cases
+In the following section @test_cases_results, we will showcase the results of the test cases for our different approaches, which are the Unstable Rust ABI, the abi_stable crate, the stabby crate and the rust_bridge crate. We will evaluate the performance, development complexity, limitations and interoperability of each approach, and compare them to our control group. Each of those approaches will be evaluated separately and compared to the control group.
+
+
+== Description and motivation for the test cases <test_cases_results>
 
 === Control group: Static and Dynamic variation
 
+For the control group, we will also evaluate the our criteria, but without the use of any plugin logic, the results will in general refer to the current state of the Rust Language. This is useful, so we can understand how much the different approaches deviate from the current state of Rust, and to understand the overhead introduced by the plugin system.
+
 ==== Performance
 
-First, we want to establish a baseline for the performance of our benchmark by running it without any plugin logic. This will allow us to understand the overhead introduced by the plugin system and to compare the results of the different approaches against this baseline.
+To establish a baseline for the performance of our benchmark, we run it without any plugin logic. This allows us to understand the overhead introduced by the plugin system and to compare the results of the different approaches against this baseline.
 
 #figure(
   table(
@@ -67,7 +73,7 @@ First, we want to establish a baseline for the performance of our benchmark by r
     table.header[*Test Case*][*Standard*][*Blackboxed*],
     [Creation], [243.18 ps], [245.37 ps],
     [Single Fuse], [1.2422 ns], [2.3027 ns],
-    [Multi Fuse], [856.15  #sym.mu\s], [865.71 #sym.mu\s],
+    [Multi Fuse], [856.15 #sym.mu\s], [865.71 #sym.mu\s],
   ),
   caption: [Criterion benchmark: Static variation],
 ) <criterion-control-group-static>
@@ -83,7 +89,9 @@ First, we want to establish a baseline for the performance of our benchmark by r
   caption: [Criterion benchmark: Dynamic variation],
 ) <criterion-control-group-dynamic>
 
-When comparing table @criterion-control-group-static and table @criterion-control-group-dynamic, we can see that the results are very similar, which indicates that the difference between static and dynamic variations does not have a significant impact on the performance of the benchmark. This is expected, as the only difference is how the ```Fuser``` trait is implemented and called.
+When comparing table @criterion-control-group-static and table @criterion-control-group-dynamic, we can see that the results are very similar, which indicates that the difference between static and dynamic variations does not have a significant impact on the performance of the benchmark. This is expected, as the only difference is how the ```Fuser``` trait is initialized.
+
+Additionally, there doesn't seem to be a huge impact on the performance when using the `black_box` function, which indicates that the optimizations of the compiler do not have a significant impact on the performance of the benchmark. This is can potentially be due to the targeted architecture of the benchmark.
 
 #figure(
   table(
@@ -107,30 +115,31 @@ When comparing table @criterion-control-group-static and table @criterion-contro
   caption: [Gungraun benchmark: Dynamic variation],
 ) <gungraun-control-group-dynamic>
 
-The estimated cycles of the table @gungraun-control-group-static and table @gungraun-control-group-dynamic show that the final results are very similar.
+The estimated cycles of the table @gungraun-control-group-static and table @gungraun-control-group-dynamic show that the final results are very similar, regardless of the usage of a static or dynamic variation.
 
 
 ==== Development complexity
 
 We are sticking to the standard Rust development process, which is well-documented and widely used in the Rust community. This means that we are using the standard Rust toolchain, including Cargo for package management and build automation, and we are following the standard Rust coding conventions and best practices. This approach allows us to leverage the existing Rust ecosystem and resources, and it provides a familiar development experience for Rust developers.
 
-As this is the control group, this represent the state of rust and therefore we are assigning a rating of ++.
+As this is the control group, this represent the state of rust and therefore we are assigning a rating of *++*.
 
 ==== Limitation
 
 Our control group does not have any *limitations* on a technical level, as we are not introducing any dynamic loading or plugin logic here. We are using the base library of Rust and all of the features this language provides. This is standard rust and therefore the limitations are the same as for any other Rust project.
 
-While it is not possible to introduce dynamic plugins in this control group, we can still put this as optimal showcase of minimal limitations that a plugin system might have - therefore we rate this as: ++.
+While it is not possible to introduce dynamic plugins in this control group, we can still put this as optimal showcase of minimal limitations that an ideal plugin system might have - therefore we rate this as: *0*.
 
 ==== Interoperability
 
-In this control group, *interoperability* is not an option, as we cannot introduce dynamic plugins here. Using the metrics stated in @interoperability, we can evaluate the control group as follows: 0.
+In the Rust default usage, *interoperability* is not an option, and therefore we cannot write dynamic plugins. The Rust ABI is not supported by other languages, and therefore we evaluate the control group as follows: *0*.
+
+
 
 === Unstable Rust ABI
 
-==== Performance
 
-Running the benchmark with the Unstable Rust ABI approach, we can see that the performance is significantly worse compared to the control group, which is expected due to the overhead of communication via FFI.
+==== Performance
 
 #figure(
   table(
@@ -154,21 +163,38 @@ Running the benchmark with the Unstable Rust ABI approach, we can see that the p
   caption: [Gungraun benchmark: Unstable Rust ABI variation],
 ) <gungraun-unstable-abi>
 
+We can infer the following from the results of the Criterion benchmark and the Gungraun benchmark for the Unstable Rust ABI approach: Optimizations by the compiler do not result in any performance improvements. This is expected, as the compiler used for the benchmark cannot optimize the code of the plugin, as it is compiled separately and loaded at runtime. 
+
+Comparing the results to the control group, we detect a loss of roughly *16%* in performance, which is expected due to the overhead of communication via FFI.
+
 ==== Development complexity
 
 For the Unstable Rust ABI approach, we are using the standard Rust development process, which is well-documented and widely used in the Rust community. However, due to the unstable nature of the Rust ABI, we need to be careful when updating our rust compiler version. This will essentially lock you in place for the duration of your project. This risk might be okay on a small scale, but as soon as your software or library needs to grow and incorporate other developers or libraries, it is not acceptable to use.
 
-Therefore, we are rating the development complexity of this approach as -. We see this restriction alone to a specific Rust compiler version as a significant disadvantage.
+Other complexities that can arise from this approach are:
 
-==== Limitation
+- You cannot safely pass owned Rust types across the plugin/host boundaries and ensuring that they can be represented in C using  ```rust #[repr(C)]```, 
+- You have to implement an catch-all panic handler for every boundary,
+- You have to assign the ```rust #[no_mangle]``` attribute to every function that you want to expose to the plugin system,
+- You cannot use generics and trait objects across the plugin/host boundaries, as they are fundamentally incompatible with the unstable ABI.
 
-The limitations of the Unstable Rust ABI approach are similar to the development complexity. You are not able to update your compiler version and therefore working with other libraries (which might require a newer version of the compiler) is restricted.
+When working with ```rust async``` code, a developer needs to be aware, that passing a ```rust Future``` type is not possible due to it's opaqueness. This is due to the compiler generating a lot of code for a state machine, which has unknown size and unknown layout. This is getting additionally complicated by the the required management of the asynchronous runtime (like `tokio`) and usage of ```rust Pin```, which ensures that the memory location of the Future is stable, which is required for the correct execution of the Future.
+
+A developer needs to manage a lot of low-level details when working with the Unstable Rust ABI approach, which is a huge barrier that needs to be overcome to implement a plugin system using this approach. Therefore, we are rating the development complexity of this approach as *\-\-*. 
+
+==== Language Limitation
+
+In this case, the language limitations are directly interlinked with the development complexity, as the limitations of the Rust language itself are the main reason for the high development complexity of this approach.
+
+With the reasons given above, many features of the rust language are not available when working with the Unstable Rust ABI approach, which significantly limits the capabilities of the plugin system and makes it difficult to implement complex plugins. Therefore, we are rating the language limitations of this approach as *\-\-*.
+
 
 ==== Interoperability
 
-There is no interoperability with the Unstable Rust ABI approach, as the plugin and the host application must be compiled with the same version of the Rust compiler to ensure compatibility. This means that you cannot use plugins compiled with a different version of Rust, which significantly limits the flexibility and usability of this approach. Other languages are also not able to understand the Rust ABI. While there are some similarities between the C and Rust ABI, the Rust compiler is using it's LLM to optimize parts of the code.
+There is a very low amount of interoperability with the Unstable Rust ABI approach, as the plugin and the host application must be compiled with the same version of the Rust compiler to ensure compatibility. This means that you cannot use plugins compiled with a different version of Rust, which significantly limits the flexibility and usability of this approach. Other languages are also not able to understand the Rust ABI. While there are some similarities between the C and Rust ABI, the Rust compiler is using its LLVM to optimize parts of the code.
 
-Therefore, we are rating the interoperability of this approach as 0.
+Therefore, we are rating the interoperability of this approach as *0*.
+
 
 === abi_stable (crate)
 
@@ -196,25 +222,38 @@ Therefore, we are rating the interoperability of this approach as 0.
   caption: [Gungraun benchmark: Stable Rust ABI variation],
 ) <gungraun-stable-abi>
 
+Comparing the results to the control group, we detect a loss of roughly *25%* in performance, which is expected due to the overhead of communication via FFI and the additional abstractions introduced by the abi_stable crate to provide a stable ABI for Rust.
 
 ==== Development complexity
 
 The abi_stable crate provides a stable ABI for Rust, which allows developers to create plugins that can be loaded at runtime without worrying about compatibility issues. However, using this crate requires some additional setup and configuration compared to the standard Rust development process. Developers need to define their plugin interfaces using the abi_stable API, which may require some learning curve and additional effort to understand and use effectively.
 
-The documentation for this is decent, but there are some gaps and areas that are not well-explained, without diving into the code itself. 
+The documentation for this is decent, but there are some gaps and areas that are not well-explained, without diving into the source code itself. In addition, the example implementation shows a very good scenario, but it doesn't explain very well, why certain decision were made in this scenario.
 
-In addition, the example implementation shows a very good scenario, but it doesn't explain very well, why certain decision were made.
+Otherwise, the implementation requires a high amount of boilerplate code, which needs to be studied first before implementing a plugin system using this crate. For example, many common types like ```rust Vec<T>```, ```rust String```, and ```rust Result<T, E>```, need to be converted to their FFI-safe equivalents, like ```rust RVec<T>```, ```rust RString```, and ```rust RResult<T, E>```.
 
-Otherwise, the implementation requires a high amount of boilerplate code, which can be a significant barrier for developers who are not familiar with this type of architecture.
+This crate has been used in production by some companies, which indicates that it is a viable option for implementing plugin systems in Rust, but it may not be the best choice for all projects, especially for those that require a high level of performance or have strict requirements for development complexity. Due to it's relatively old age, there are comparatively more resources available online, which can help developers to understand and use this crate effectively.
 
-Therefore, we rate this is as approach as +, as it is generally manageable to implement, but requires some additional setup and configuration.
+In total we give this crate rating of *0*, as the initial complexity might be overwhelming, but once you understand the concepts and implement it into your project, it won't introduce additional points of complexity.
 
-==== Limitation
+
+==== Language Limitation
+
+Outside of the regular limitations of Rust due it's monomorphization at the compile time, the abi_stable crate does not introduce bigger limitations, as it provides a stable ABI for Rust, which allows developers to create plugins that can be loaded at runtime without worrying about compatibility issues. 
+
+That being said, the usage of ```rust async``` is not possible as this crate doesn't provide a FFI-safe wrapper for the ```rust Future```. 
+
+We rate this approach as *0*, as it is common issue that developers face when working with FFI, and it is not specific to the abi_stable crate.
+
 
 ==== Interoperability
 
+In general, the abi_stable crate uses the C ABI to provide a stable interface for plugins, which allows for some level of interoperability with other languages that can understand the C ABI. Since the C ABI is very commonly understood by many languages, this allows to still have a good amount of interoperability. Therefore we rate this approach as *+*.
+
 
 === stabby (crate)
+
+==== Performance
 
 #figure(
   table(
@@ -238,11 +277,30 @@ Therefore, we rate this is as approach as +, as it is generally manageable to im
   caption: [Gungraun benchmark: stabby variation],
 ) <gungraun-stabby>
 
+Comparing the results to the control group, we detect a loss of roughly *9%* in performance, which is expected due to the overhead of communication via FFI and the additional abstractions introduced by the abi_stable crate to provide a stable ABI for Rust.
+
+It is also interesting to see, that here the `black_box` function seem to have a slight performance improvement, which is not expected at first. Taking a look the the 2nd table @gungraun-stabby also doesn't reveal the reason for this. A closer look at the assembly code of the benchmark or other information of the gungraun benchmark might reveal the reason for this, but this is out of scope for this thesis.
+
+It should also be noted that, at the time of writing, `stabby` version 72.1.1 exhibits a known performance regression on Rust 1.78 and above. All benchmarks for this crate were therefore run on the nightly compiler, which resolves the issue.
+
 ==== Development complexity
 
-==== Limitation
+The `stabby` crate offers a relatively clean API for defining ABI-stable plugin interfaces and loading shared libraries at runtime. The macro-driven design keeps the definition of FFI-safe types concise, and the crate ships FFI-safe equivalents of many common standard library types (e.g. `stabby::vec::Vec`, `stabby::string::String`), which reduces the amount of manual conversion code compared to approaches that require writing all wrappers by hand.
+
+The official GitHub repository includes a worked example that serves as a useful starting point. However, it does not cover more advanced scenarios such as error propagation across the boundary, plugin versioning, or panic safety — areas where a developer will need to consult the API documentation or source code directly. The documentation itself is thorough and explains the rationale behind design decisions clearly, which helps when working through less obvious problems.
+
+The main drawback is that `stabby` is a younger crate with a smaller community compared to `abi_stable`. There are fewer third-party tutorials, forum answers, and real-world examples available, which can slow down onboarding. `async` is not currently supported across plugin boundaries, though the crate's documentation describes possible workarounds.
+
+We rate the development complexity of this approach as *0*: the initial learning curve is manageable and the API is well-designed, but the limited community resources and the absence of async support prevent a higher rating.
+
+==== Language Limitation
+
+`stabby` does not impose significant restrictions beyond those inherent to any stable-ABI approach. The requirement to use FFI-safe types at plugin boundaries means that some Rust idioms — generic parameters, trait objects using Rust's native vtables, and `async fn` return types — cannot be used directly across the boundary. The crate provides workarounds for each of these cases, though with varying levels of ergonomics. The lack of native async support is the most impactful limitation for projects that rely heavily on asynchronous code. We rate the language limitations of this approach as *0*.
 
 ==== Interoperability
+
+`stabby` exposes its plugin interface through a C-compatible ABI, which means that host applications or plugins written in other languages with C FFI support (C, C++, Python, etc.) can interoperate with a `stabby`-based plugin system, provided the data layout of shared types is agreed upon. We rate this approach as *+*.
+
 
 === rust_bridge (crate)
 
@@ -251,8 +309,6 @@ As this crate allows to differentiate between JSON and binary communication, we 
 ==== Performance
 
 Due to an NullHandle error during the plugin creation itself with criterion, we were not able to run the whole criterion benchmark for the rust_bridge crate. It appears that there is some issue when creating the plugin itself, which seems to be related to the reading of the plugin file. Until the end of the deadline for this thesis, a solution was not found.
-
-For the creation of the plugin, a total of 104,733,470 instructions were required, which results in an estimated 126,094,247 cycles. Using a `blackbox` version, shows that the creation of the plugin requires 104,733,497 instructions and 126,094,318 cycles, which is very similar to the standard version, and therefore indicates that the creation of the plugin is not affected by the optimizations of the compiler.
 
 The benchmark follow the same structure that is required for communicating with the rust_bridge crate. First, we create a request header (json and binary; single and multiple) and then we send it to the plugin, which will process the request by performing the fusion (single or multiple) and return a response. The response has to be additionally parsed in the binary version only. Additionally, the response has the same structure regardless of input size @fuser-trait.
 
@@ -316,7 +372,7 @@ The instruction count show that the JSON version does require significantly less
 
 Here it also confirms that the optimizations of the compiler doesn't have a big impact on the results, which indicates that the results are not affected by any optimizations of the compiler. 
 
-In summary, the performance of the binary transport layer is on par with the control group, while the performance of the JSON transport layer is significantly worse compared to the control group.
+Compared to our control group, the JSON transport layer overhead is at around *537%* and for the binary transport layer, the overhead is at around *25%*.
 
 ==== Development complexity
 
@@ -324,38 +380,65 @@ Overall, the implementation for the rust_bridge crate is rather mixed. While the
 
 The documentation of the crate is very good with extensive showcases of diagrams and examples. The technical documentation features diagrams for it's architecture, describes the lifecycle of a plugin, how the request and response flow works,  and a lot more.
 
-We rate the development complexity of the JSON transport layer as ++ due to it's simplicity, while the binary transport layer is rated as + due to the additional complexity of handling binary data and ensuring that the data layout is correct. 
+We rate the development complexity of the JSON transport layer as *+* due to it's simplicity, while the binary transport layer is rated as *-* due to the additional complexity of handling binary data and ensuring that the data layout is correct. 
 
-==== Limitation
+==== Language Limitation
 
 As stated by the documentation of the crate, the current limitations are related to the reloading of plugins and the usage of multiple instances. @crate-rustbridge-limitations-reload-multiple-instances
 Reloading of plugins is technically already possible, but due to it's inherently fragile nature (global state, background threads, third-party libraries side effects) it is currently not recommended to use this feature. Instead it is recommended to restart a process instead of a dynamic reload.
 For the multiple instances, the crate does support this feature, but the logging and tracing infrastructure is not designed to handle multiple instances, which can lead to some issues when using this feature.
-Other limitations are related to the JSON transportation layer. There, the usage of pointers and references is not supported, which can limit the types of data that can be easily serialized and deserialized. 
 
-In total, we rate the limitations of the JSON transport layer and the binary transport layer as +. The limitations are there and need to be considered when designing a large and efficient plugin system, but for most other use cases, these limitations can be easily worked around.
+But more importantly is the fact, that the usage of multiple processes doesn't allow the usage of shared memory, which can be a significant limitation for some use cases, as it can limit the performance and scalability of the plugin system. This is especially relevant for use cases that require a high amount of data to be transferred between the host and the plugin, as the overhead of serializing and deserializing data can become a bottleneck.
+
+In total, we rate the limitations of the JSON transport layer and the binary transport layer as *0*. The limitations are there and need to be considered when designing a large and efficient plugin system, but for most other use cases, these limitations can be handled with careful design and implementation.
 
 ==== Interoperability
 
 A plugin is exported in the form of a rbp-file. Using this file (and the corresponding crates bindings), this plugin can be used in any Rust application, but also other languages like Python, Java, Ruby and more. Due to the serialization to a JSON, it is generally very flexible. The binary layer needs a bit more work, but can be used across the language boundaries as well, as long as the data layout is correct and the corresponding bindings are implemented.
 
-We give this crate a rating of ++ for interoperability, as it allows for a wide range of use cases and can be used in various programming languages, which makes it a very flexible solution for plugin development.
+We give this crate a rating of *++* for interoperability, as it allows for a wide range of use cases and can be used in various programming languages, which makes it a very flexible solution for plugin development.
 
 
-== Overview and evaluation of the acquired results
+== Overview and evaluation of the acquired results <summary_results>
+
+@summary-table collects the ratings assigned to each approach across all four evaluation criteria. The performance column expresses the overhead relative to the control group's Multi Fuse baseline of 0.856 ms; the remaining columns use the qualitative scale defined in @methods.
 
 #figure(
   table(
     columns: 5,
-    table.header[*Crate*][*Performance (Multi Fuse)*][*Development Complexity*][*Limitation*][*Interoperability*],
-    [*native*], [0.856 ms], [++], [++], [0],
-    [*unstable_abi*], [0.998 ms], [], [], [],
-    [*stable_abi*],  [1.0699 ms], [], [], [],
-    [*stabby*], [0.934 ms], [], [], [],
-    [*rust_bridge (JSON)*], [460.43 ms], [], [], [],
-    [*rust_bridge (Binary)*], [1.063 ms], [], [], [],
+    table.header[*Crate*][*Perf. Diff*][*Development Complexity*][*Limitation*][*Interoperability*],
+    [*native*], [], [++], [0], [0],
+    [*unstable_abi*], [16%], [\-\-], [\-\-], [0],
+    [*abi_stable*],  [25%], [0], [0], [+],
+    [*stabby*], [9%], [0], [0], [+],
+    [*rust_bridge (JSON)*], [537%], [+], [0], [++],
+    [*rust_bridge (Binary)*], [25%], [-], [0], [++],
   ),
-  caption: [Summary of results\nNote: Creation for rust_bridge only includes the creation of the request header],
-) <gungraun-rustbridge>
+  caption: [Summary of results.],
+) <summary-table>
 
+=== Performance
 
+The stabby crate performed the fastest among the stable-ABI approaches, with an overhead of roughly 9% compared to the control group. The abi_stable crate had the highest overhead among the in-process approaches at roughly 25%. 
+
+The out-of-process approach using the rust_bridge crate showed a stark contrast between its JSON and binary transport layers. The JSON transport layer's overhead ballooned to roughly 537% for large payloads, while the binary transport layer maintained an overhead close to 25%, comparable to the in-process approaches, even at scale.
+
+=== Development complexity
+
+The *Unstable Rust ABI* is rated *\-\-* and stands apart from every other approach. It demands manual `#[no_mangle]` annotations, `#[repr(C)]` type definitions, a catch-all panic handler at every boundary, and a fixed compiler version across the entire project for the lifetime of the plugin system. These constraints accumulate into a significant maintenance burden that disqualifies the approach for any project expected to grow or to incorporate third-party libraries.
+
+The remaining approaches are more practical. *abi_stable* and *stabby* both receive a *0*: they replace the Unstable ABI's manual busywork with a macro-driven type system, at the cost of an initial learning curve and the requirement to use FFI-safe type wrappers. Between the two, `stabby`'s API is more modern and its documentation more explicit about its design rationale, but its smaller community means fewer secondary resources. *rustbridge*'s JSON transport layer receives *+* for being the most accessible of all approaches — developers work entirely in safe Rust with standard serializable types — while the binary transport layer is rated *-* because correctly specifying the binary layout of shared structs requires careful attention and is easy to get wrong silently.
+
+=== Language limitations
+
+All approaches except the Unstable Rust ABI are rated *0*. The shared limitation across `abi_stable`, `stabby`, and `rustbridge` is the absence of native `async` support across plugin boundaries. For `abi_stable` and `stabby` this is a consequence of the Rust compiler generating opaque, unsized state machines for `async fn` return types, which cannot be represented in a C-compatible ABI. For `rustbridge` it is a consequence of the IPC model: asynchronous code on either side of the boundary works normally, but the plugin invocation itself is a synchronous request/response cycle.
+
+The Unstable Rust ABI is rated *\-\-* because it additionally restricts generics, native trait objects, and any owned Rust type that cannot be expressed as `#[repr(C)]`, effectively reducing the surface area of expressible plugin interfaces to a thin C-like subset of the language.
+
+=== Interoperability
+
+This is the dimension where the approaches diverge most sharply. The *Unstable Rust ABI* receives *0*: even Rust-to-Rust interoperability requires an exact compiler version match, making cross-version or cross-language use impossible in practice.
+
+*abi_stable* and *stabby* both receive *+*. Their C-compatible ABI surface allows any language with C FFI support to call into a plugin, provided the host understands the data layout. This is a reasonable level of interoperability for a primarily Rust-centric ecosystem.
+
+*rustbridge* receives *++* for both transport layers. The `rbp` bundle format and JSON-RPC protocol are language-agnostic by design, and the crate already ships official bindings for Java, Kotlin, C\#, Python, Go, and Erlang. The binary transport layer requires implementing the binary protocol on the non-Rust side, but the protocol is documented and straightforward. For projects where plugin authors may not be using Rust, or where the host application is a polyglot system, `rustbridge` is the only approach that provides seamless interoperability without requiring the plugin consumer to link against a C library or understand `#[repr(C)]` layouts.
