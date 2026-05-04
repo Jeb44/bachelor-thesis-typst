@@ -3,6 +3,9 @@
 // Universe: https://typst.app/universe/package/diatypst
 // Documentation: https://mdwm.org/diatypst/index.html
 
+#let color_thu = color.rgb("#0054a3")
+#let color_white = white
+
 #set page(
   footer: none,
   header: none,
@@ -14,11 +17,11 @@
 // Custom First Slide:
 #block(
   inset: 0.8cm,
-  fill: blue.darken(50%),
+  fill: color_thu,
   width: 100%,
   height: 60%,
   align(bottom)[
-    #text(2.0em, weight: "bold", fill: white)[Plugin System in Rust]
+    #text(2.0em, weight: "bold", fill: color_white)[Plugin Architectures with Rust]
   ],
 )
 #block(
@@ -32,9 +35,9 @@
     //fill: blue.darken(50%),
     
     [
-    #text(1.4em, fill: blue.darken(50%), weight: "bold", "Your subtitle"),
-    #linebreak(),
-    #text(1.1em, "a date maybe?"),
+    #text(1.4em, fill: color_thu, weight: "bold", "an Analysis of Obstacles and Prospects")
+    #linebreak()
+    #text(1.1em, "20.05.2026")
     ],
     [#align(center + horizon)[#image("res/Hensoldt_Logo_2020.svg", height: 50%)]],
     [#align(center + horizon)[#image("res/thu-logo.png", height: 100%)]]
@@ -43,17 +46,19 @@
 
 
 #show: slides.with(
-  title: "Diatypst", // Required
-  subtitle: "easy slides in typst",
-  date: "01.07.2024",
-  authors: "Author Name",
+  title: "Plugin System in Rust", // Required
+  subtitle: "Plugin Architectures with Rust - an
+Analysis of Obstacles and Prospects",
+  date: "20.05.2026",
+  authors: "Gabriel Zimmermann",
 
   // Optional (for more see docs at https://mdwm.org/diatypst/)
   ratio: 16 / 9,
   layout: "medium",
-  title-color: blue.darken(60%),
+  title-color: color_thu,
   toc: true,
-  first-slide: false,
+  first-slide: false, // first-slide disabled so we can use our custom first slide with logos
+  theme: "full"
 )
 
 = First Section
@@ -63,3 +68,5 @@
 #lorem(20)
 
 / *Term*: Definition
+
+
