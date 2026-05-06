@@ -47,8 +47,7 @@
 
 #show: slides.with(
   title: "Plugin System in Rust", // Required
-  subtitle: "Plugin Architectures with Rust - an
-Analysis of Obstacles and Prospects",
+  subtitle: "an Analysis of Obstacles and Prospects",
   date: "20.05.2026",
   authors: "Gabriel Zimmermann",
 
@@ -61,12 +60,98 @@ Analysis of Obstacles and Prospects",
   theme: "full"
 )
 
-= First Section
+= Fundamentals 
 
-== First Slide
+== Plugin Systems
+
+#grid(
+  columns: (1fr, auto),
+
+  lorem(20),
+  figure[
+    #image("res/plugins_figure.svg", width: 75%)
+  ]
+)
+
+
+
+
+== ABI
+
+#figure[
+  #image("res/abi_figure.svg", width: 100%)
+]
+
+== Dynamic linking and loading
+
+=== Process of dynamic linking and loading
+
+#grid(
+  columns: (1fr, auto),
+  align: horizon,
+
+  enum(numbering: "1)")[Discovery][Loading][Resolution][Execution],
+  figure[
+    #image("res/dynamic_linking_figure.svg", width: 90%)
+  ]
+)
+
+=== Example with Rust ABI
+
+// Everything after "let symbol" is just for rust :3
+// lib is required to store the functions "lifetime"...
+
+Using the `libloading` crate:
+
+```rust
+trait Fuser { 
+  fn fuse(&self, data: &[SensorData]) -> Result<SensorData, Box<dyn Error>>;
+}
+struct Plugin<T> where T: Fn() -> Box<dyn Fuser> + Copy{
+  lib: Library,
+  func: T,
+}
+fn new(path: &PathBuf, symbol_name: &[u8]) -> Result<Self, libloading::Error> {
+  let lib = unsafe { Library::new(path) }?; // 1+2) Discovery and Loading
+  let symbol: Symbol<T> = unsafe { lib.get(symbol_name) }?; // 3) Resolution
+  let func: T = *symbol; // fn deref(&self) -> &T
+  Ok(Plugin { lib, func })
+}
+```
+
+#pagebreak()
+
+// extern "Rust" -> use Rust ABI
+
+```rust
+type FuseFunc = extern "Rust" fn() -> Box<dyn Fuser>;
+let p: Plugin<FuseFunc> = Plugin::new(&plugin_path.into(), "average_plugin".as_bytes()).unwrap();
+a(&p);
+
+fn a(plugin: &Plugin<FuseFunc>) {
+  let fuser: Box<dyn Fuser> = plugin.get();
+  let sd = [ SensorData::new(42.0, 0.01), ... ];
+  let res = fuser.fuse(&sd); // 4) Execution 
+  println!("a) {:?}", res);
+}
+```
+
+// Reminder that libloading crate resolves the whole OS-specific dynamic linking and loading logic for us
+// All other crates that are shown today use libloading internally
+
+== IPC
+
+#figure[
+  #image("res/ipc_figure.svg", width: 100%)
+]
 
 #lorem(20)
 
 / *Term*: Definition
+
+
+= Introduction
+
+
 
 
