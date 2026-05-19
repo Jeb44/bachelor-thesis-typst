@@ -31,17 +31,17 @@
   grid(
     columns: (1fr, auto, auto),
     gutter: 3pt,
-    rows: (1fr),
+    rows: 1fr,
     //fill: blue.darken(50%),
-    
+
     [
-    #text(1.4em, fill: color_thu, weight: "bold", "an Analysis of Obstacles and Prospects")
-    #linebreak()
-    #text(1.1em, "20.05.2026")
+      #text(1.4em, fill: color_thu, weight: "bold", "an Analysis of Obstacles and Prospects")
+      #linebreak()
+      #text(1.1em, "20.05.2026")
     ],
     [#align(center + horizon)[#image("res/Hensoldt_Logo_2020.svg", height: 50%)]],
-    [#align(center + horizon)[#image("res/thu-logo.png", height: 100%)]]
-  )
+    [#align(center + horizon)[#image("res/thu-logo.png", height: 100%)]],
+  ),
 )
 
 
@@ -57,20 +57,24 @@
   title-color: color_thu,
   toc: true,
   first-slide: false, // first-slide disabled so we can use our custom first slide with logos
-  theme: "full"
+  theme: "full",
 )
 
-= Fundamentals 
+= Introduction
 
 == Plugin Systems
 
 #grid(
   columns: (1fr, auto),
 
-  lorem(20),
+  [
+    - *Extensibility*: The ability to add new functionality post-deployment.
+    - *Modularity*: Plugins are isolated units that interact with the host through a well-defined interface.
+    - *Dynamic Loading*: Plugins are typically loaded at runtime rather than linked statically at compile time.
+  ],
   figure[
     #image("res/plugins_figure.svg", width: 75%)
-  ]
+  ],
 )
 
 
@@ -93,7 +97,7 @@
   enum(numbering: "1)")[Discovery][Loading][Resolution][Execution],
   figure[
     #image("res/dynamic_linking_figure.svg", width: 90%)
-  ]
+  ],
 )
 
 === Example with Rust ABI
@@ -104,7 +108,7 @@
 Using the `libloading` crate:
 
 ```rust
-trait Fuser { 
+trait Fuser {
   fn fuse(&self, data: &[SensorData]) -> Result<SensorData, Box<dyn Error>>;
 }
 struct Plugin<T> where T: Fn() -> Box<dyn Fuser> + Copy{
@@ -131,7 +135,7 @@ a(&p);
 fn a(plugin: &Plugin<FuseFunc>) {
   let fuser: Box<dyn Fuser> = plugin.get();
   let sd = [ SensorData::new(42.0, 0.01), ... ];
-  let res = fuser.fuse(&sd); // 4) Execution 
+  let res = fuser.fuse(&sd); // 4) Execution
   println!("a) {:?}", res);
 }
 ```
@@ -150,8 +154,24 @@ fn a(plugin: &Plugin<FuseFunc>) {
 / *Term*: Definition
 
 
-= Introduction
 
+= Conclusion
+
+== Performance
+
+#figure(
+  table(
+    columns: 5,
+    table.header[*Crate*][*Perf. Diff*][*Development Complexity*][*Limitation*][*Interoperability*],
+    [*native*], [], [++], [0], [0],
+    [*unstable_abi*], [16%], [\-\-], [\-\-], [0],
+    [*abi_stable*], [25%], [0], [0], [+],
+    [*stabby*], [9%], [0], [0], [+],
+    [*rust_bridge (JSON)*], [537%], [+], [0], [++],
+    [*rust_bridge (Binary)*], [25%], [-], [0], [++],
+  ),
+  caption: [Summary of results.],
+) <summary-table>
 
 
 
