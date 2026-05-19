@@ -66,7 +66,6 @@
 
 #grid(
   columns: (1fr, auto),
-
   [
     - *Extensibility*: The ability to add new functionality post-deployment.
     - *Modularity*: Plugins are isolated units that interact with the host through a well-defined interface.
@@ -77,10 +76,19 @@
   ],
 )
 
+== Criteria
+
+- Performance Overhead
+- Development Complexity
+- Language Limitations
+- Interoperability
 
 
 
-== ABI
+
+= ABI
+
+== Application Binary Interface 
 
 #figure[
   #image("res/abi_figure.svg", width: 100%)
