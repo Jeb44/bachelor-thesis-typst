@@ -72,19 +72,19 @@
     <marker id="a-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/>
     </marker>
-    <marker id="a-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+    <marker id="a-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="0">
       <path d="M7,0 L0,3.5 L7,7 Z" fill="#555"/>
     </marker>
   </defs>
   <!-- call -->
   <line x1="231" y1="90" x2="254" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
-  <text x="242" y="86" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <text x="242" y="81" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
   <!-- return -->
   <line x1="254" y1="112" x2="231" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
   <text x="242" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
   <!-- right side -->
   <line x1="506" y1="90" x2="529" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
-  <text x="517" y="86" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <text x="517" y="81" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
   <line x1="529" y1="112" x2="506" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
   <text x="517" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
 
