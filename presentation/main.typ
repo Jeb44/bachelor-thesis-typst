@@ -55,6 +55,7 @@
     #text(2.0em, weight: "bold", fill: color_white)[Plugin Architectures with Rust]
   ],
 )
+
 #block(
   height: 35%,
   width: 100%,
@@ -169,6 +170,7 @@ This is expressed from *0 to ++*. // 0 represents rust default scope
 
 Calling conventions, Data Layout, Name Mangling, Exception Handling, etc. 
 
+/*
 === Dynamic Linking/Loading
 
 #grid(
@@ -180,6 +182,7 @@ Calling conventions, Data Layout, Name Mangling, Exception Handling, etc.
     #image("res/dynamic_linking_figure.svg", width: 90%)
   ],
 )
+*/
 
 == (Unstable) Rust ABI
 
@@ -191,20 +194,22 @@ Calling conventions, Data Layout, Name Mangling, Exception Handling, etc.
 
 ```rust
 // In base library (used by application and plugin):
-trait Fuser {
-  fn fuse(&self, data: &[SensorData]) -> Result<SensorData, Box<dyn Error>>;
-}
+trait Fuser { 
+  fn fuse(&self, data: &[SensorData]) -> Result<SensorData, Box<dyn Error>>; }
 ```
 
+#codly(highlights: (
+  (line: 5, start: 10, end: 18, fill: yellow, ),
+  (line: 6, start: 28, end: 41, fill: yellow,),
+))
+
 ```rust
-// In plugin (library):
+// In plugin:
 struct AveragePlugin;
 impl Fuser for AveragePlugin { ... }
 
 #[unsafe(no_mangle)] // ensure name can be found in binary
-pub fn average_plugin() -> Box<dyn Fuser> {
-    Box::new(AveragePlugin::new())
-}
+pub fn average_plugin() -> Box<dyn Fuser> { Box::new(AveragePlugin::new()) }
 ```
 
 #pagebreak()
@@ -212,7 +217,9 @@ pub fn average_plugin() -> Box<dyn Fuser> {
 // extern "Rust" -> use Rust ABI
 
 #codly(highlights: (
-  (line: 8, start: 29, end: none, fill: yellow, tag: "(1)"),
+  (line: 2, start: 17, end: 52, fill: yellow),
+  (line: 3, start: 13, end: 28, fill: yellow),
+  (line: 8, start: 29, end: 40, fill: yellow),
   //(line: 8, start: 29, end: none, fill: yellow, tag: "(1)"),
 ))
 
@@ -227,9 +234,9 @@ let plugin: Plugin<FuseFunc> = Plugin::new(
 let fuser: Box<dyn Fuser> = plugin.get();
 let sd = [ SensorData::new(24.0, 0.01), ... ];
 let res = fuser.fuse(&sd); // 4) Execution
-println!("{:?}", res);
 ```
 
+/*
 #pagebreak()
 
 #codly(highlights: (
@@ -268,6 +275,7 @@ struct Plugin<T> where T: Fn() -> Box<dyn Fuser> + Copy{
 // All other crates that are shown today use libloading internally
 
 #pagebreak()
+*/
 
 === .... but it's Unstable
 
