@@ -88,6 +88,7 @@
   toc: false, // outline replaced with only main headers
   first-slide: false, // first-slide disabled so we can use our custom first slide with logos
   theme: "full",
+  count: "number"
 )
 
 //#outline(target: heading.where(level: 2))
@@ -103,14 +104,19 @@
 // most common approach is the use of language Application binary interfaces, but binary or "textual" formats work here too
 
 #grid(
-  columns: (auto, auto),
+  columns: (1fr),
+  rows: (auto, auto),
+  align: horizon + center,
   figure[
-    #image("res/plugins_figure.svg", width: 100%)
+    #image("res/plugins_figure.svg", width: 40%)
   ],
   [
+    /*
     - *Extensibility*: The ability to add new functionality post-deployment.
     - *Modularity*: Plugins are isolated units that interact with the host through a _well-defined interface_.
     - *Dynamic Loading*: Plugins are typically loaded at runtime rather than linked statically at compile time.
+    */
+    "Computer Software that adds new functionality to an existing application without altering the host program itself"
   ],
 )
 
@@ -159,7 +165,9 @@ This is expressed from *0 to ++*. // 0 represents rust default scope
   #image("res/abi_figure.svg", width: 90%)
 ]
 
-Related term: *Foreign Function Interface*
+//Related term: *Foreign Function Interface*
+
+Calling conventions, Data Layout, Name Mangling, Exception Handling, etc. 
 
 === Dynamic Linking/Loading
 
@@ -442,7 +450,13 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
   caption: [Summary of results.],
 ) <summary-table>
 
+#pagebreak()
 
+- Updating the plugin and host hasn't been tested
+- 
+
+
+/*
 = Appendix
 
 == abi_stable implementation
@@ -755,6 +769,7 @@ pub fn parse_response(data: &[u8]) -> Result<(BinaryFuserResponseHeader, &Sensor
   Ok((*header, sensor_data))
 }
 ```
+*/
 
 
 // Feedback:
