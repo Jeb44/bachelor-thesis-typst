@@ -118,14 +118,31 @@
     - *Modularity*: Plugins are isolated units that interact with the host through a _well-defined interface_.
     - *Dynamic Loading*: Plugins are typically loaded at runtime rather than linked statically at compile time.
     */
-    "Computer Software that adds new functionality to an existing application without altering the host program itself"
+    "Computer Software that adds new functionality to an existing application \ without altering the host program itself"
   ],
 )
+
 
 == Criteria
 
 / *Performance Overhead*: Resulting from the required overhead, how slow is the execution of the plugin compared to the rust native solution.
-This is measured by using a average data fusion with 1.000.000 data points and expressed with *percentages*.
+This is measured by using a average data fusion with 1 and with 1.000.000 data points and expressed as *percentages*. Quantified by using the criterion benchmark.
+
+/ *Development Complexity*: #list[
+Learning curve of the implementation
+][
+Quality of the Documentation and examples 
+][
+Required amount of work and consequences for setup, configurations and integration
+]
+#pagebreak()
+/ *(Language) Limitations*: How much does this approach limit the usage of the rust languages features and ecosystem.
+/ *Interoperability*: How well can this approach work with other libraries, tools and especially languages.
+/*
+== Criteria
+
+/ *Performance Overhead*: Resulting from the required overhead, how slow is the execution of the plugin compared to the rust native solution.
+This is measured by using a average data fusion with 1 and with 1.000.000 data points and expressed as *percentages*. Quantified by using the criterion benchmark.
 
 // quantified by using benchmarks (criterion benchmark)
 
@@ -155,7 +172,7 @@ This is expressed from *0 to ++*. // 0 represents rust default scope
 
 // Example: Simple Temperature Fusion, where the fusion code itself is the plugin
 // focus on rust to rust communication for my test cases
-
+*/
 
 = Application Binary Interface (ABI)
 
