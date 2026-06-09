@@ -5,6 +5,7 @@
 
 // Maybe change to Hensoldt colors?
 #let color_thu = color.rgb("#0054a3")
+#let color_hensoldt = color.rgb("#009b49")
 #let color_white = white
 
 
@@ -93,7 +94,7 @@
 )
 
 //#outline(target: heading.where(level: 2))
-#outline(depth: 1)
+#outline(depth: 2)
 
 = Introduction
 
@@ -156,11 +157,9 @@ This is expressed from *0 to ++*. // 0 represents rust default scope
 // focus on rust to rust communication for my test cases
 
 
-= ABI
+= Application Binary Interface (ABI)
 
-== Basics
-
-=== Application Binary Interface
+#heading(level: 2, outlined: false)[Application Binary Interface]
 
 #figure[
   #image("res/abi_figure.svg", width: 90%)
@@ -199,8 +198,8 @@ trait Fuser {
 ```
 
 #codly(highlights: (
-  (line: 5, start: 10, end: 18, fill: yellow, ),
-  (line: 6, start: 28, end: 41, fill: yellow,),
+  (line: 5, start: 10, end: 18, fill: color_hensoldt, ),
+  (line: 6, start: 28, end: 41, fill: color_thu,),
 ))
 
 ```rust
@@ -217,16 +216,16 @@ pub fn average_plugin() -> Box<dyn Fuser> { Box::new(AveragePlugin::new()) }
 // extern "Rust" -> use Rust ABI
 
 #codly(highlights: (
-  (line: 2, start: 17, end: 52, fill: yellow),
-  (line: 3, start: 13, end: 28, fill: yellow),
-  (line: 8, start: 29, end: 40, fill: yellow),
-  //(line: 8, start: 29, end: none, fill: yellow, tag: "(1)"),
+  (line: 2, start: 17, end: 29, fill: color_hensoldt),
+  (line: 2, start: 31, end: 52, fill: color_thu),
+  (line: 3, start: 13, end: 28, fill: color_thu),
+  (line: 8, start: 29, end: 40, fill: color_thu),
 ))
 
 ```rust
 // In application:
 type FuseFunc = extern "Rust" fn() -> Box<dyn Fuser>; // use Rust ABI
-let plugin: Plugin<FuseFunc> = Plugin::new(
+let plugin: Plugin<FuseFunc> = Plugin::new( // internally uses `libloading`
   &plugin_path.into(),
   "average_plugin".as_bytes()
 ).unwrap(); // 1), 2) and 3)
@@ -285,10 +284,12 @@ The implementation itself is not complex, but...
 - Changes to structs, traits and enums *may* impact the generated binary
 - Base library, application and plugins need to run on the *same compiler version*
 
-But we can use the *C ABI* (next slides)! But representing Rust in C is very difficult and will introduce trade-offs.
+But we can use the *C ABI* (next slides)! But representing Rust in C (and vice versa) is very difficult and will introduce trade-offs. Some of them are:
 
 - How are structs, traits and enums represented?
 - What happens to VTables?
+- What about Lifetimes and Ownership?
+- ...
 
 // Mention the different representation of a struct in C compared to Rust from earlier
 // this is even worse for enums, as a lot of "hidden" optimizations are done here. C can only represent enums as tagged unions + index, while Rust can optimize a lot here!
@@ -305,8 +306,7 @@ But we can use the *C ABI* (next slides)! But representing Rust in C is very dif
 
 - Many hidden structs and types are generated and are required for further use, therefore it is overwhelming at first
 - Usage of ```rust async``` is not possible, because a FFI-safe wrapper for ```rust Future``` is not supported. 
-
-// Example code in the appendix, if you are curios
+- Github repository seems to be dormant.
 
 == stabby crate
 
@@ -375,15 +375,29 @@ const _: () = {	assert!(MyStruct::has_optimal_layout()) }
     [*native*], [], [++], [0], [0],
     [*unstable_abi*], [16%], [\-\-], [\-\-], [0],
     [*abi_stable*], [25%], [0], [0], [+],
-    [*stabby*], [9%], [0], [0], [+],
+    [*stabby*], [#emph(text(color.green.darken(20%))[9%])], [0], [0], [+],
   ),
   caption: [Summary of ABI results.],
 ) <summary-abi-table>
 
+#figure(
+  table(
+    columns: 3,
+    table.header[*Crate*][*Macro Calls*][*Type Changes*],
+    [*unstable_abi*], [1], [0], // no_mangle
+    [*abi_stable*], [ #emph(text(red)[16])], [2], // too many, vec and slice
+    [*stabby*], [3], [2], // as said earlier, vec and slices
+  ),
+  caption: [Code complexity depicted as amount of line or type changes. ],
+) <abi_code_complexity>
+#pagebreak()
+
+
+
 
 = IPC
 
-== Interprocess communication
+#heading(level: 2, outlined: false)[Interprocess Communication (IPC)]
 
 #figure[
   #image("res/ipc_figure.svg", width: 100%)
@@ -418,7 +432,7 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
 - Binary approach requires manual conversion of bytes to types
 - Requires strict separation of plugin and application // reusing structs "from base library" isn't possible
 
-== Comparison rustbridge
+== Comparison rustbridge JSON vs Binary
 
 // Complexity: no shared memory, therefore the use of serialization
 // Debatable if this should have also reduced the "Language Limitation" here
@@ -438,7 +452,7 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
 
 = Conclusion
 
-== Conclusion
+#heading(level: 2, outlined: false)[Conclusion]
 
 // Ultimatively, this display isn't the best as it doesn't show the nuances and the results or very subjective
 // How one would choose an approach also depends on the use-case
@@ -461,8 +475,19 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
 #pagebreak()
 
 - Updating the plugin and host hasn't been tested
-- 
+- Development complexity aren't fine grained enough
+- abi_stable last git update was 2.5 years ago
 
+#heading(level: 2, outlined: false)[Finished!]
+
+#grid(
+  columns: (1fr),
+  rows: (1fr),
+  align: horizon + center,
+  [
+    #text(size: 2.4em)[Thank you for your attention! #linebreak() Any questions?],
+  ]
+)
 
 /*
 = Appendix
