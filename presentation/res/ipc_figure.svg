@@ -39,7 +39,7 @@
   <rect x="240" y="90" width="220" height="80" rx="10" ry="10"
         fill="#eefaf3" stroke="#2ea86a" stroke-width="2"/>
   <text x="350" y="115" text-anchor="middle" font-size="12" fill="#1a7a4a" font-weight="bold">IPC Channel</text>
-  <text x="350" y="133" text-anchor="middle" font-size="10" fill="#2ea86a">Pipe · Socket · Shared Memory</text>
+  <text x="350" y="133" text-anchor="middle" font-size="10" fill="#2ea86a">Pipe · Socket</text>
   <text x="350" y="151" text-anchor="middle" font-size="10" fill="#2ea86a">Message Queue · D-Bus · ...</text>
 
   <defs>

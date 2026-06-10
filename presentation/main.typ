@@ -105,27 +105,13 @@
 // jigsaw puzzle! interconnecting pieces have to perfectly fit the gap
 // most common approach is the use of language Application binary interfaces, but binary or "textual" formats work here too
 
-#grid(
-  columns: (1fr),
-  rows: (auto, auto),
-  align: horizon + center,
-  figure[
-    #image("res/plugins_figure.svg", width: 40%)
-  ],
-  [
-    /*
-    - *Extensibility*: The ability to add new functionality post-deployment.
-    - *Modularity*: Plugins are isolated units that interact with the host through a _well-defined interface_.
-    - *Dynamic Loading*: Plugins are typically loaded at runtime rather than linked statically at compile time.
-    */
-    "Computer Software that adds new functionality to an existing application \ without altering the host program itself"
-  ],
-)
-
-
+  #figure(
+    image("res/plugins_figure.svg", width: 50%),
+    caption: "Computer Software that adds new functionality to an existing application without altering the host program itself"
+  )
 == Criteria
 
-/ *Performance Overhead*: Resulting from the required overhead, how slow is the execution of the plugin compared to the rust native solution.
+/ *Performance Overhead*: Resulting from the required overhead, how slow is the execution of the plugin compared to the rust (static) native solution.
 This is measured by using a average data fusion with 1 and with 1.000.000 data points and expressed as *percentages*. Quantified by using the criterion benchmark.
 
 / *Development Complexity*: #list[
@@ -178,13 +164,21 @@ This is expressed from *0 to ++*. // 0 represents rust default scope
 
 #heading(level: 2, outlined: false)[Application Binary Interface]
 
-#figure[
-  #image("res/abi_figure.svg", width: 90%)
-]
+
+#figure(
+  image("res/abi_figure_top.svg", width: 100%)
+)
+
+*Contract specification*: Calling conventions, Data Layout, Name Mangling, Exception Handling, etc.
+
+Dynamically loading plugin into memory follows: #list[
+  *Discovery*: host locates plugin binary file][
+  *Loading*: host loads plugin into memory][
+  *Resolution*: host resolves symbol address][
+  *Execution*: host invokes plugin function
+  ]
 
 //Related term: *Foreign Function Interface*
-
-Calling conventions, Data Layout, Name Mangling, Exception Handling, etc. 
 
 /*
 === Dynamic Linking/Loading
@@ -216,7 +210,8 @@ trait Fuser {
 
 #codly(highlights: (
   (line: 5, start: 10, end: 18, fill: color_hensoldt, ),
-  (line: 6, start: 28, end: 41, fill: color_thu,),
+  (line: 6, start: 28, end: 41, fill: color_thu,), // add AVGERAGEPLUGIN COLOR
+  (line: 6, start: 54, end: 73, fill: color_hensoldt, ),
 ))
 
 ```rust
@@ -244,12 +239,12 @@ pub fn average_plugin() -> Box<dyn Fuser> { Box::new(AveragePlugin::new()) }
 type FuseFunc = extern "Rust" fn() -> Box<dyn Fuser>; // use Rust ABI
 let plugin: Plugin<FuseFunc> = Plugin::new( // internally uses `libloading`
   &plugin_path.into(),
-  "average_plugin".as_bytes()
-).unwrap(); // 1), 2) and 3)
+  "average_plugin".as_bytes() 
+).unwrap(); // Discovery, Loading and Resolution
 
 let fuser: Box<dyn Fuser> = plugin.get();
 let sd = [ SensorData::new(24.0, 0.01), ... ];
-let res = fuser.fuse(&sd); // 4) Execution
+let res = fuser.fuse(&sd); // Execution
 ```
 
 /*
@@ -314,9 +309,9 @@ But we can use the *C ABI* (next slides)! But representing Rust in C (and vice v
 
 == abi_stable crate
 
-- Usage of ```rust #[sabi_trait]``` attribute macro for creating FFI-safe trait objects
+- Usage of ```rust #[sabi_trait]```, ```#[export_root_module]```, ```#[sabi_extern_fn]```, ... attribute macros for creating FFI-safe (Foreign Function Interface) trait objects // FULL NAME FOR FFI
 - Allows for a lot of customization when specifying the FFI
-- Provides ABI-stable alternatives to many _std-types_, but also some _external_types_
+- Provides ABI-stable alternatives to many _std-types_, but also some _external types_
 - Widely used crate with a lot of community support 
 
 *but*:
@@ -336,7 +331,6 @@ But we can use the *C ABI* (next slides)! But representing Rust in C (and vice v
 - Provides ABI-stable alternatives to common types
 - Built for performance
 - "Compiler-change-proof ABI-stability is proven statically through the type system."
-- Imported/Exported binaries can be checked for validity 
 
 *but*:
 
@@ -410,9 +404,7 @@ const _: () = {	assert!(MyStruct::has_optimal_layout()) }
 #pagebreak()
 
 
-
-
-= IPC
+= Interprocess Communication (IPC)
 
 #heading(level: 2, outlined: false)[Interprocess Communication (IPC)]
 
@@ -420,7 +412,7 @@ const _: () = {	assert!(MyStruct::has_optimal_layout()) }
   #image("res/ipc_figure.svg", width: 100%)
 ]
 
-Biggest takeaway: Shared memory is not accessible for this approach. Therefore (de-) *serialization* is required. 
+Biggest takeaway: Shared memory is not accessible by default for this approach. Therefore (de-) *serialization* is required. 
 
 
 == rustbridge crate // note the correct spelling!!
@@ -439,9 +431,9 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
 
 - Stable C ABI — Plugins work regardless of your Rust compiler version or optimization flags
 - Managed lifecycle: Startup, shutdown, including logging callbacks
-- Excellent technical documentation and examples
 - Communication with Request/Response Headers (JSON or Binary)
-- Usage of CLI tools to create the bundle
+- Usage of CLI tools to create the `.rbp` bundle
+- Excellent technical documentation and examples
 
 *but*:
 
@@ -461,7 +453,7 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
     columns: 5,
     table.header[*Crate*][*Perf. Diff*][*Development Complexity*][*Limitation*][*Interoperability*],
     [*native*], [], [++], [0], [0],
-    [*rustbridge (JSON)*], [537%], [+], [0], [++],
+    [*rustbridge (JSON)*], [#emph(text(red)[537%])], [+], [0], [++],
     [*rustbridge (Binary)*], [25%], [-], [0], [++],
   ),
   caption: [Summary of IPC results.],
@@ -481,21 +473,27 @@ High-level JSON, native Rust speed — Work with serde types, not raw pointers!
     table.header[*Crate*][*Perf. Diff*][*Development Complexity*][*Limitation*][*Interoperability*],
     [*native*], [], [++], [0], [0],
     [*unstable_abi*], [16%], [\-\-], [\-\-], [0],
-    [*abi_stable*], [25%], [0], [0], [+],
+    [*abi_stable*], [#emph(text(blue)[25%])], [0], [0], [+],
     [*stabby*], [9%], [0], [0], [+],
     [*rustbridge (JSON)*], [537%], [+], [0], [++],
-    [*rustbridge (Binary)*], [25%], [-], [0], [++],
+    [*rustbridge (Binary)*], [#emph(text(blue)[25%])], [-], [0], [++],
   ),
   caption: [Summary of results.],
 ) <summary-table>
 
+
+- Development complexity and Limitation aren't fine grained enough
+- Updating the plugin and host hasn't been tested
+
 #pagebreak()
 
-- Updating the plugin and host hasn't been tested
-- Development complexity aren't fine grained enough
-- abi_stable last git update was 2.5 years ago
+From the 2025 Rust Survey:
+- 14% of respondents stated that a stable ABI would unblock their use cases - around 24% state that it would improve their code
+- 13% consider implementing a dynamic library plugins a significant problem 
 
-#heading(level: 2, outlined: false)[Finished!]
+Currently no visible signs that a stable ABI is coming anytime soon.
+
+//#heading(level: 2, outlined: false)[Finished!]
 
 #grid(
   columns: (1fr),

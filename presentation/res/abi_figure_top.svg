@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" width="760" height="180" font-family="monospace, sans-serif">
+
+  <rect width="760" height="180" fill="white"/>
+
+  <!-- ═══════════════════════ TITLE STRIP ═══════════════════════ -->
+  <text x="380" y="22" text-anchor="middle" font-size="13" font-family="sans-serif"
+        font-weight="bold" fill="#222">What an ABI Governs</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- TOP HALF: function call crossing the ABI boundary          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Caller box -->
+  <rect x="20" y="35" width="210" height="130" rx="8" fill="#f0f4ff" stroke="#4a7eb5" stroke-width="2"/>
+  <rect x="20" y="35" width="210" height="26" rx="8" fill="#4a7eb5"/>
+  <rect x="20" y="51"  width="210" height="10" fill="#4a7eb5"/>
+  <text x="125" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="white">Host (Caller)</text>
+
+  <text x="36" y="76"  font-size="10" fill="#333">fn main() {</text>
+  <text x="48" y="91"  font-size="10" fill="#4a7eb5">  let r = add(3, 5);</text>
+  <text x="36" y="106" font-size="10" fill="#333">}</text>
+  <!-- register annotation -->
+  <text x="36" y="126" font-size="9" fill="#888" font-style="italic">// args: rdi=3, rsi=5</text>
+  <text x="36" y="140" font-size="9" fill="#888" font-style="italic">// return: rax</text>
+  <text x="36" y="154" font-size="9" fill="#888" font-style="italic">// symbol: add  (no_mangle)</text>
+
+  <!-- Callee box -->
+  <rect x="530" y="35" width="210" height="130" rx="8" fill="#fff4ee" stroke="#e07b39" stroke-width="2"/>
+  <rect x="530" y="35" width="210" height="26" rx="8" fill="#e07b39"/>
+  <rect x="530" y="51"  width="210" height="10" fill="#e07b39"/>
+  <text x="635" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="white">Plugin (Callee)</text>
+
+  <text x="546" y="76"  font-size="10" fill="#333">#[no_mangle]</text>
+  <text x="546" y="91"  font-size="10" fill="#333">pub extern "C" fn</text>
+  <text x="546" y="106" font-size="10" fill="#e07b39">  add(a: u32, b: u32)</text>
+  <text x="546" y="121" font-size="10" fill="#333">  -&gt; u32 { a + b }</text>
+  <!-- register annotation -->
+  <text x="546" y="141" font-size="9" fill="#888" font-style="italic">// reads: rdi, rsi</text>
+  <text x="546" y="155" font-size="9" fill="#888" font-style="italic">// writes: rax</text>
+
+  <!-- ABI boundary -->
+  <rect x="255" y="35" width="250" height="130" rx="8" fill="#f5fbf7" stroke="#2ea86a" stroke-width="2"/>
+  <text x="380" y="53" text-anchor="middle" font-size="11" font-family="sans-serif"
+        font-weight="bold" fill="#1a7a4a">ABI Contract</text>
+
+  <!-- 4 ABI aspects as small pills -->
+  <!-- Calling Convention -->
+  <rect x="268" y="60" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="74" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Calling Convention — args in rdi, rsi; ret in rax
+  </text>
+  <!-- Data Layout -->
+  <rect x="268" y="84" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="98" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Data Layout — field order, alignment, padding
+  </text>
+  <!-- Name Mangling -->
+  <rect x="268" y="108" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="122" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Name Mangling — symbol name encoding
+  </text>
+  <!-- Exception Handling -->
+  <rect x="268" y="132" width="224" height="20" rx="4" fill="#ddf3e6" stroke="#2ea86a" stroke-width="1"/>
+  <text x="380" y="146" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#1a7a4a">
+    Exception Handling — panic / unwind safety
+  </text>
+
+  <!-- arrows through ABI boundary -->
+  <defs>
+    <marker id="a-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/>
+    </marker>
+    <marker id="a-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="0">
+      <path d="M7,0 L0,3.5 L7,7 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <!-- call -->
+  <line x1="231" y1="90" x2="254" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
+  <text x="242" y="81" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <!-- return -->
+  <line x1="254" y1="112" x2="231" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
+  <text x="242" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
+  <!-- right side -->
+  <line x1="506" y1="90" x2="529" y2="90" stroke="#4a7eb5" stroke-width="1.8" marker-end="url(#a-r)"/>
+  <text x="517" y="81" text-anchor="middle" font-size="8" fill="#4a7eb5">call</text>
+  <line x1="529" y1="112" x2="506" y2="112" stroke="#e07b39" stroke-width="1.8" marker-end="url(#a-l)"/>
+  <text x="517" y="127" text-anchor="middle" font-size="8" fill="#e07b39">ret</text>
+
+</svg>
