@@ -417,7 +417,7 @@ Biggest takeaway: Shared memory is not accessible by default for this approach. 
 
 == rustbridge crate // note the correct spelling!!
 
-High-level JSON, native Rust speed — Work with serde types, not raw pointers!
+High-level JSON, native Rust speed — Work with `serde` types, not raw pointers!
 
 
 #figure(
